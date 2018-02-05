@@ -1,56 +1,52 @@
-Wallet Tools
+Ferramentas de Carteira
 ---------------------
 
 ### [SpendFrom](/contrib/spendfrom) ###
 
-Use the raw transactions API to send coins received on a particular
-address (or addresses).
+Usa a API de transações raw para enviar as moedas recebidas em um determinado endereço (ou endereços).
 
-Repository Tools
+Repositório de Ferramentas
 ---------------------
 
-### [Developer tools](/contrib/devtools) ###
-Specific tools for developers working on this repository.
-Contains the script `github-merge.sh` for merging github pull requests securely and signing them using GPG.
+### [Ferramentas de Desenvolvedor](/contrib/devtools) ###
+Ferramentas específicas para desenvolvedores que trabalham neste repositório. Contém o script `github-merge.sh` para mesclar as pull requests do github com segurança e assiná-las usando o GPG.
 
-### [Verify-Commits](/contrib/verify-commits) ###
-Tool to verify that every merge commit was signed by a developer using the above `github-merge.sh` script.
+### [Verificar-Commits](/contrib/verify-commits) ###
+Ferramenta para verificar se cada commit mesclado foi assinado por um desenvolvedor usando o script `github-merge.sh` acima.
 
-### [Linearize](/contrib/linearize) ###
-Construct a linear, no-fork, best version of the blockchain.
+### [Linearizar](/contrib/linearize) ###
+Constrói um linear, não-fork, a melhor versão da blockchain.
 
 ### [Qos](/contrib/qos) ###
 
-A Linux bash script that will set up traffic control (tc) to limit the outgoing bandwidth for connections to the Criptoreal network. This means one can have an always-on criptoreald instance running, and another local criptoreald/criptoreal-qt instance which connects to this node and receives blocks from it.
+Um script Linux bash que irá configurar o controle de tráfego (tc) para limitar a largura de banda de saída para conexões a rede Criptoreal. Isto significa que pode-se ter uma instância sempre executada no criptoreald, e outra instância local criptoreald/criptoreal-qt  que se conecta a este nó e recebe blocos dele.
 
 ### [Seeds](/contrib/seeds) ###
-Utility to generate the pnSeed[] array that is compiled into the client.
+Utilitário para gerar a matriz pnSeed[] que é compilada no cliente.
 
-Build Tools and Keys
+Ferramentas de compilação e chaves
 ---------------------
 
 ### [Debian](/contrib/debian) ###
-Contains files used to package criptoreald/criptoreal-qt
-for Debian-based Linux systems. If you compile criptoreald/criptoreal-qt yourself, there are some useful files here.
+Contém arquivos usados para o pacote criptoreald/criptoreal-qt para usuários Linux baseados em Debian. Se você compilar criptoreald/criptoreal-qt por conta própria, existem alguns arquivos bem úteis aqui.
 
-### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Gavin's notes on getting gitian builds up and running using KVM.
+### [Descriptores Gitian](/contrib/gitian-descriptors) ###
+Notas do Gavin sobre como compilar o Gitian usando KVM.
 
 ### [Gitian-downloader](/contrib/gitian-downloader)
-Various PGP files of core developers. 
+Vários arquivos PGP de desenvolvedores principais.
 
 ### [MacDeploy](/contrib/macdeploy) ###
-Scripts and notes for Mac builds. 
+Scripts e notas para os compiladores Mac. 
 
-Test and Verify Tools 
+Ferramentas de verficação e teste
 ---------------------
 
 ### [TestGen](/contrib/testgen) ###
-Utilities to generate test vectors for the data-driven Criptoreal tests.
+Utilidades para gerar vetores de teste para os testes de Criptoreal baseados em dados.
 
 ### [Test Patches](/contrib/test-patches) ###
-These patches are applied when the automated pull-tester
-tests each pull and when master is tested using jenkins.
+Estes patches são aplicados quando o testador automatizado testa cada chamado e quando o master é testado usando jenkins.
 
-### [Verify SF Binaries](/contrib/verifysfbinaries) ###
-This script attempts to download and verify the signature file SHA256SUMS.asc from SourceForge.
+### [Verificar SF Binaries](/contrib/verifysfbinaries) ###
+Este script tenta baixar e verificar o arquivo de assinatura SHA256SUMS.asc do SourceForge.
