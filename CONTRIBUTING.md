@@ -1,110 +1,110 @@
-Contributing to Criptoreal Core
+Contribuindo para o Criptoreal Core
 ============================
 
-The Criptoreal Core project operates an open contributor model where anyone is welcome to contribute towards development in the form of peer review, testing and patches. This document explains the practical process and guidelines for contributing.
+O projeto Criptoreal opera um modelo de colaborador aberto, onde qualquer um é convidado a contribuir para o desenvolvimento na forma de revisões, testes e patches. Este documento explica o processo prático e as diretrizes para contribuir.
 
-Firstly in terms of structure, there is no particular concept of “Core developers” in the sense of privileged people. Open source often naturally revolves around meritocracy where longer term contributors gain more trust from the developer community. However, some hierarchy is necessary for practical purposes. As such there are repository “maintainers” who are responsible for merging pull requests as well as a “lead maintainer” who is responsible for the release cycle, overall merging, moderation and appointment of maintainers.
+Primeiramente, em termos de estrutura, não existe um conceito particular de “desenvolvedores principais” no sentido de pessoas privilegiadas. O código aberto geralmente gira em torno da meritocracia, onde os contribuintes de longo prazo ganham mais confiança da comunidade de desenvolvedores. Entretanto, alguma hierarquia é necessária para fins práticos. Como tal, existem "mantenedores" do respositório que são responsáveis pela incorporação de pull requests assim como um “mantenedor líder” que é responsável pelo ciclo de lançamento, fusão geral, moderação e nomeação dos outros mantenedores.
 
 
-Contributor Workflow
+Fluxo de trabalho do Colaborador
 --------------------
 
-The codebase is maintained using the “contributor workflow” where everyone without exception contributes patch proposals using “pull requests”. This facilitates social contribution, easy testing and peer review.
+A base de código é mantida usando o  “fluxo de trabalho do colaborador” onde todos, sem exceção contribuem com propostas de patch usando  “pull requests”. Isto facilita a contribuição social, os testes e as revisões de pares.
 
-To contribute a patch, the workflow is as follows:
+Para contribuir com um patch, o fluxo de trabalho deve ser o seguinte::
 
-  - Fork repository
-  - Create topic branch
-  - Commit patches
+  - Repositório Fork 
+  - Criar um tópico
+  - Enviar patches
 
-The project coding conventions in [doc/developer-notes.md](doc/developer-notes.md) must be adhered to.
+As convenções de codificação do projeto localizadas em [doc/developer-notes.md](doc/developer-notes.md) devem ser respeitadas.
 
-In general [commits should be atomic](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention) and diffs should be easy to read. For this reason do not mix any formatting fixes or code moves with actual code changes.
+Em geral [os commits devem ser atômicos](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention) e os diffs devem ser fáceis de ler. Por este motivo, não misture nenhuma correção de formatação ou movimentos de código com mudanças de código reais.
 
-Commit messages should be verbose by default consisting of a short subject line (50 chars max), a blank line and detailed explanatory text as separate paragraph(s); unless the title alone is self-explanatory (like "Corrected typo in main.cpp") then a single title line is sufficient. Commit messages should be helpful to people reading your code in the future, so explain the reasoning for your decisions. Further explanation [here](http://chris.beams.io/posts/git-commit/).
+As mensagens Commit devem ser detalhadas por padrão consistindo uma linha de assunto curto (50 caracteres no máximo), uma linha em branco e um texto explicativo detalhado com parágrafo(s) separado(s); a menos que o título seja auto-explicativo (como "Erro corrigido no no main.cpp") então uma única linha de título é suficiente. As mensagens commit devem ser úteis para as pessoas que leem seu código no futuro, então explique o raciocínio das suas decisões. Maiores explicações [aqui](http://chris.beams.io/posts/git-commit/).
 
-If a particular commit references another issue, please add the reference, for example "refs #1234", or "fixes #4321". Using "fixes or closes" keywords will cause the corresponding issue to be closed when the pull request is merged.
+Se uma commit específica faz referência a outro problema, por favor adicione a referência, por exemplo, "refs #1234", ou "correções #4321". Usar palavras-chave "corrigir ou fechar" fará com que o problema correspondente seja fechado quando a pull request for mesclada.
 
-Please refer to the [Git manual](https://git-scm.com/doc) for more information about Git.
+Por favor veja o [manual Git](https://git-scm.com/doc) para mais informações sobre o Git.
 
-  - Push changes to your fork
-  - Create pull request
+  - Fazer mudanças no seu fork
+  - Criar pull request
 
-The title of the pull request should be prefixed by the component or area that the pull request affects. Examples:
+O título da pull request deve ser prefixado pelo componente ou área em que o pull request afeta. Examplos:
 
-    Consensus: Add new opcode for BIP-XXXX OP_CHECKAWESOMESIG
-    Net: Automatically create hidden service, listen on Tor
-    Qt: Add feed bump button
+    Consenso: Adciona novo opcode para BIP-XXXX OP_CHECKAWESOMESIG
+    Net: Automaticamente cria serviço oculto, escuta no Tor
+    Qt: Adiciona botão bump
     Trivial: fix typo
 
-If a pull request is specifically not to be considered for merging (yet) please prefix the title with [WIP] or use [Tasks Lists](https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments) in the body of the pull request to indicate tasks are pending.
+Se uma pull request não for especificamente considerada para fusão (ainda), por favor inicie o título com [WIP] ou use [Listas de Tarefas](https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments) no corpo da pull request para indicar tarefas que estão pendentes.
 
-The body of the pull request should contain enough description about what the patch does together with any justification/reasoning. You should include references to any discussions (for example other tickets or mailing list discussions).
+O corpo de uma pull request deve conter uma descrição suficiente sobre o que o patch faz em conjunto com qualquer justificativa/raciocínio. Você deve incluir referências a qualquer discussão (por exemplo, outros tickets ou lista de discussões).
 
-At this stage one should expect comments and review from other contributors. You can add more commits to your pull request by committing them locally and pushing to your fork until you have satisfied all feedback. If your pull request is accepted for merging, you may be asked by a maintainer to squash and or rebase your commits before it will be merged. The length of time required for peer review is unpredictable and will vary from patch to patch.
+Nesta fase, deve-se esperar comentários e reviews de outros contribuidores. Você pode adicionar mais commits para sua pull request, mantendo-os localmente ou enviando para o seu fork até que esteja satisfeito com todo o feedback. Se a sua pull request for aceita para fusão, um mantenedor pode solicitar que você revise seus commits antes da fusão. O tempo necessário para a revisão de pares é imprevisível e irá variar de acordo com cada patch.
 
 
-Pull Request Philosophy
+Filosofia Pull Request
 -----------------------
 
-Patchsets should always be focused. For example, a pull request could add a feature, fix a bug, or refactor code; but not a mixture. Please also avoid super pull requests which attempt to do too much, are overly large, or overly complex as this makes review difficult.
+Os patches devem sempre ser focados. Por exemplo, uma pull request pode adicionar um recurso, corrigir um bug, ou um código de refator; mas não uma mistura. Por favor, evite também pull requests que tenham que fazer muita coisa, são excessivamente grandes, ou execessivamente complexas pois isso dificulta a revisão.
 
 
-### Features
+### Recursos
 
-When adding a new feature, thought must be given to the long term technical debt and maintenance that feature may require after inclusion. Before proposing a new feature that will require maintenance, please consider if you are willing to maintain it (including bug fixing). If features get orphaned with no maintainer in the future, they may be removed by the Repository Maintainer.
-
-
-### Refactoring
-
-Refactoring is a necessary part of any software project's evolution. The following guidelines cover refactoring pull requests for the project.
-
-There are three categories of refactoring, code only moves, code style fixes, code refactoring. In general refactoring pull requests should not mix these three kinds of activity in order to make refactoring pull requests easy to review and uncontroversial. In all cases, refactoring PRs must not change the behaviour of code within the pull request (bugs must be preserved as is).
-
-Project maintainers aim for a quick turnaround on refactoring pull requests, so where possible keep them short, uncomplex and easy to verify. 
+Ao adicionar um novo recurso, deve-se considerar a dívida técnica a longo prazo e a manutenção que este recurso pode requerer após a inclusão. Antes de propor um novo recurso que exigirá manutenção, considere se você está disposto a mantê-lo (incluindo correção de bugs). Se os recursos ficarem órfãos sem manutenção no futuro, eles podem ser removidos pelo mantenedor do repositório.
 
 
-"Decision Making" Process
+### Refatoração
+
+Refatoração é uma parte necessária da evolução de qualquer projeto de software. As seguintes diretrizes abrangem pull requests de refatoração para o projeto.
+
+Existem três categorias de refatoração, apenas movimento de código, correções de estilo de código, refatoração de código. Em geral, os pull requests de refatoração não devem misturar estes três tipos de atividade, a fim de facilitar a revisão. Em todos os casos, os PRs de refatoração não devem alterar o comportamento do código dentro do pull request (os bugs devem ser preservados como estão).
+
+Os mantenedores do projeto visam uma rápida reviravolta nos pull requests de refatoração, portanto, sempre que possível, mantê-los curtos e fáceis de verificar. 
+
+
+Processo de "Tomada de Decisão" 
 -------------------------
 
-The following applies to code changes to the Criptoreal Core project (and related projects such as libsecp256k1), and is not to be confused with overall Criptoreal Network Protocol consensus changes.
+O seguinte se aplica a mudanças de código no projeto do Criptoreal Core (e projetos relacionados como libsecp256k1), e não deve ser confundido com as mudanças gerais do consenso do protocolo da rede Criptoreal.
 
-Whether a pull request is merged into Criptoreal Core rests with the project merge maintainers and ultimately the project lead.
+Se um pull request é incorporado ao Criptoreal Core ele fica com os mantenedores e os líderes do projeto.
 
-Maintainers will take into consideration if a patch is in line with the general principles of the project; meets the minimum standards for inclusion; and will judge the general consensus of contributors.
+Os mantenedores levarão em consideração se um patch estiver em conformidade com os princípios gerais do projeto; se atende aos padrões minimos de inclusão; e julgará o consenso geral dos contribuintes.
 
-In general, all pull requests must:
+Em geral, todas as pull requests devem:
 
-  - have a clear use case, fix a demonstrable bug or serve the greater good of the project (for example refactoring for modularisation);
-  - be well peer reviewed;
-  - have unit tests and functional tests where appropriate;
-  - follow code style guidelines;
-  - not break the existing test suite;
-  - where bugs are fixed, where possible, there should be unit tests demonstrating the bug and also proving the fix. This helps prevent regression.
+  - ter um caso de uso claro, corrgir um erro ou servir o bem maior do projeto (por exemplo refatoração ou modularização);
+  - ser bem revisado pelos pares;
+  - ter testes unitários e funcionais, quando apropriado;
+  - seguir as diretrizes de estilo de código;
+  - não quebrar o conjunto de testes existentes;
+  - onde os erros são corrigidos, sempre que possível, deve haver testes unitários que demonstrem o erro e também provar a correção. Isto ajuda a evitar a regressão.
 
-Patches that change Criptoreal consensus rules are considerably more involved than normal because they affect the entire ecosystem and so must be preceded by extensive mailing list discussions and have a numbered BIP. While each case will be different, one should be prepared to expend more time and effort than for other kinds of patches because of increased peer review and consensus building requirements.
-
-
-### Peer Review
-
-Anyone may participate in peer review which is expressed by comments in the pull request. Typically reviewers will review the code for obvious errors, as well as test out the patch set and opine on the technical merits of the patch. Project maintainers take into account the peer review when determining if there is consensus to merge a pull request (remember that discussions may have been spread out over github, mailing list and IRC discussions). The following language is used within pull-request comments:
-
-  - ACK means "I have tested the code and I agree it should be merged";
-  - NACK means "I disagree this should be merged", and must be accompanied by sound technical justification. NACKs without accompanying reasoning may be disregarded;
-  - utACK means "I have not tested the code, but I have reviewed it and it looks OK, I agree it can be merged";
-  - Concept ACK means "I agree in the general principle of this pull request";
-  - Nit refers to trivial, often non-blocking issues.
-
-Reviewers should include the commit hash which they reviewed in their comments.
-
-Project maintainers reserve the right to weigh the opinions of peer reviewers using common sense judgement and also may weight based on meritocracy: Those that have demonstrated a deeper commitment and understanding towards the project (over time) or have clear domain expertise may naturally have more weight, as one would expect in all walks of life.
-
-Where a patch set affects consensus critical code, the bar will be set much higher in terms of discussion and peer review requirements, keeping in mind that mistakes could be very costly to the wider community. This includes refactoring of consensus critical code.
-
-Where a patch set proposes to change the Criptoreal consensus, it must have been discussed extensively on the mailing list and IRC, be accompanied by a widely discussed BIP and have a generally widely perceived technical consensus of being a worthwhile change based on the judgement of the maintainers.
+Patches que mudam as regras de consenso do Criptoreal são consideravelmente mais envolvidas do que o normal pois afetam todo o ecossistema e portanto, devem ser precedidos por extensos debates na lista de discussão e ter um BIP numerado. Embora cada caso seja diferente, um deve estar preparado para gastar mais tempo e esforço do que para outros tipos de patches, devido ao aumento dos requisitos de revisão por pares e compilação.
 
 
-Release Policy
+### Revisão de pares
+
+Qualquer pessoa pode participar da revisão de pares, que é expresa pelos comentários na pull request. Normalmente, os revisores irão rever o código para erros óbvios, além de testar o conjunto de correções e opinar sobre os méritos sobre os méritos técnicos do patch. Os mantenedores do projeto levam em consideração a avaliação dos pares ao determinar se há consenso para realizar a fusão de um pull request (lembre-se de que as discussões podem ser feitas no github, lista de email e IRC). A seguinte linguagem deve ser usada nos comentários da  pull request:
+
+  - ACK significa "Eu testei o código e concordo que deva ser mesclado";
+  - NACK significa "Eu não concordo que isso deve sofrer fusão", e deve estar acompanhado de uma justificativa técnica sólida. NACKs sem o acompanhamento de algum motivo podem ser desconsiderados;
+  - utACK significa "Eu não testei o código, mas o revisei e parece OK, Eu concordo que pode ser mesclado";
+  - Conceito ACK significa "Eu concordo no princípio geral desta pull request";
+  - Nit refere-se a problemas triviais, muitas vezes não bloqueáveis.
+
+Os revisores devem incluir o hash que eles revisaram em seus comentários.
+
+Os mantenedores do projeot se resevam o direito de pesar as opiniões dos revisores de pares usando o julgamento do senso comum e também podem ter peso com base na meritocracia: Aqueles que demonstraram um compromisso e uma compreensão mais profundos em relação ao projeto (ao longo do tempo) ou tem conhecimentos claros de domínio, podem, naturalmente ter mais peso, como seria de se esperar em todos os setores da vida.
+
+Onde um conjunto de patches afeta o código crítico de consenso, a dificuldade será muito maior em termos de discussão e requisitos de revisão por pares, tendo em mente que os erros podem ser muito onerosos para a comunidade em geral. Isto inclui refatoração de código crítico de consenso.
+
+Quando um conjunto de patches propõe mudar o consenso Criptoreal, isto deve ser discutido extensivamente na lista de emails e IRC, ser acompanhado por um BIP amplamente discutido e ter um consenso técnico amplamente percebido de ser uma mudança que vale a pena, com base no julgamento dos mantenedores.
+
+
+Política de Lançamento
 --------------
 
-The project leader is the release manager for each Criptoreal Core release.
+O líder do projeto é o gerente de lançamento para cada versão Criptoreal Core.
