@@ -6,72 +6,50 @@ Criptoreal Core staging tree 0.12.2
 https://www.criptoreal.org
 
 
-What is Criptoreal?
+O que é Criptoreal?
 ----------------
 
-Criptoreal is an experimental new digital currency that enables anonymous, instant
-payments to anyone, anywhere in the world. Criptoreal uses peer-to-peer technology
-to operate with no central authority: managing transactions and issuing money
-are carried out collectively by the network. Criptoreal Core is the name of the open
-source software which enables the use of this currency.
+Criptoreal é uma nova moeda digital experimental que permite o anonimato, pagamentos instantâneos para qualquer pessoa, em qualquer lugar do mundo. Criptoreal usa a tecnologia peer-to-peer para operar sem uma autoridade central: gerenciamento de transações e emissão de dinheiro são realizadas coletivamente pela rede. Criptoreal Core é o nome do software de código aberto que permite o uso desta moeda.
 
-For more information, as well as an immediately useable, binary version of
-the Criptoreal Core software, see https://www.criptoreal.org/get-criptoreal/.
+Para mais informações, assim como uma versão binária do software Criptoreal Core que você pode usar imediatamente, veja https://www.criptoreal.org/get-criptoreal/.
 
 
-License
+Licença
 -------
 
-Criptoreal Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+Criptoreal Core é disponibilizada nos termos da licença MIT. Veja [COPYING](COPYING) para mais informações ou veja https://opensource.org/licenses/MIT.
 
-Development Process
+Processo de desenvolvimento
 -------------------
 
-The `master` branch is meant to be stable. Development is normally done in separate branches.
-[Tags](https://github.com/criptoreal/criptoreal/tags) are created to indicate new official,
-stable release versions of Criptoreal Core.
+O `master` deve ser estável. O desenvolvimento normalmente é feito em ramos separados. [Tags](https://github.com/criptoreal/criptoreal/tags) são criadas para indicar novas versões oficiais e estáveis do Criptoreal Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
+O fluxo de trabalho de contribuição é descrito em [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Testing
+Testando
 -------
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+Testes e revisão de código são o gargalo para o desenvolvimento; obtemos mais pull requests do que podemos revisar e testar em curto prazo. Por favor, seja paciente e ajude testando as pull requests de outras pessoas e lembre-se de que este é um projeto crítico de segurança, onde qualquer erro pode custar muito dinheiro às pessoas.
 
-### Automated Testing
+### Testes automatizados
 
-Developers are strongly encouraged to write [unit tests](/doc/unit-tests.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`
+Desenvolvedores são fortemente encorajados a escrever [testes unitários](/doc/unit-tests.md) para códigos novos, e para enviar novos testes de unidades para um código antigo. Testes de unidade podem ser compilados e executados (assumindo que eles não estavam desabilitados na configuracão) com: `make check`
 
-There are also [regression and integration tests](/qa) of the RPC interface, written
-in Python, that are run automatically on the build server.
-These tests can be run (if the [test dependencies](/qa) are installed) with: `qa/pull-tester/rpc-tests.py`
+Também existem testes [de regressão e integração](/qa) na interface RPC, escritos em Python, que são executados automaticamente no servidor de compilação. Estes testes podem ser executados (se as [dependências de teste](/qa) estiverem instaladas) com: `qa/pull-tester/rpc-tests.py`
 
-The Travis CI system makes sure that every pull request is built for Windows
-and Linux, OS X, and that unit and sanity tests are automatically run.
+O sistema Travis CI garante que todas as pull requests sejam compiladas para Windows e Linux, OS X, e que os testes de unidade e sanidade sejam executados automaticamente.
 
-### Manual Quality Assurance (QA) Testing
+### Teste manual de garantia de qualidade (QA) 
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
+As alterações devem ser testadas por alguém que não o desenvolvedor que escreveu o código. Isto é especialmente importante para mudanças de grande ou alto risco. É útil adicionar um plano de teste na descrição da pull request se o teste das mudanças não for direto.
 
-Translations
+Traduções
 ------------
 
-Changes to translations as well as new translations can be submitted to
-[Criptoreal Core's Transifex page](https://www.transifex.com/projects/p/criptoreal/).
+Alterações em traduções e novas traduções podem ser enviadas para [a página do Criptoreal Core no Transifex](https://www.transifex.com/projects/p/criptoreal/).
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+Traduções são periodicamente retiradas da Transifex e mescladas para o repositório git. Veja o [processo de tradução](doc/translation_process.md) para detalhes sobre como isso funciona.
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+**Important**: Nós não aceitamos mudanças de tradução, pois as pull requests no GitHub do Transifex automaticamente substituiria os arquivos.
 
-Translators should also follow the [forum](https://www.criptoreal.org/forum/topic/criptoreal-worldwide-collaboration.88/).
+Os tradutores também devem seguir o [forum](https://www.criptoreal.org/forum/topic/criptoreal-worldwide-collaboration.88/).
