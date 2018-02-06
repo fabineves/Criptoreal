@@ -1,73 +1,71 @@
-Criptoreal Core 0.12.1
+Criptoreal Core 1.0.0
 =====================
 
-This is the official reference wallet for Criptoreal digital currency and comprises the backbone of the Criptoreal peer-to-peer network. You can [download Criptoreal Core](https://www.criptoreal.org/downloads/) or [build it yourself](#building) using the guides below.
+Esta é a carteira oficial para referência da criptomoeda Criptoreal e compreende a espinha dorsal da rede peer-to-peer. Você pode [baixar o Criptoreal Core](https://www.criptoreal.org/downloads/) ou [compilar você mesmo](#building) usando os guias abaixo.
 
-Running
+Execução
 ---------------------
-The following are some helpful notes on how to run Criptoreal on your native platform.
+Abaixo estão algumas notas úteis para executar o Criptoreal Core na sua plataforma nativa.
 
 ### Unix
 
-Unpack the files into a directory and run:
+Extraia os arquivos em um diretório e execute:
 
-- `bin/criptoreal-qt` (GUI) or
+- `bin/criptoreal-qt` (GUI) ou
 - `bin/criptoreald` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run criptoreal-qt.exe.
+Extraia os arquivos para uma pasta, depois execute o arquivo criptoreal-qt.exe.
 
 ### OS X
 
-Drag Criptoreal-Qt to your applications folder, and then run Criptoreal-Qt.
+Arraste o arquivo Criptoreal-Core para sua pasta aplicativos, depois execute Criptoreal-Core.
 
 ### Need Help?
 
-* See the [Criptoreal documentation](https://criptoreal.atlassian.net/wiki/display/DOC)
-for help and more information.
-* Ask for help on [#criptoreal](http://webchat.freenode.net?channels=criptoreal) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=criptoreal).
-* Ask for help on the [CriptorealTalk](https://criptorealtalk.org/) forums.
+* Veja a [documentação Criptoreal](https://criptoreal.atlassian.net/wiki/display/DOC) para ajuda e mais informações.
+* Peça ajuda no canal [#criptoreal](http://webchat.freenode.net?channels=criptoreal) do Freenode. Se você não tem um cliente de IRC use [o webchat](http://webchat.freenode.net?channels=criptoreal).
+* Peça ajuda nos fóruns [CriptorealTalk](https://criptorealtalk.org/).
 
-Building
+Compilação
 ---------------------
-The following are developer notes on how to build Criptoreal Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+Abaixo estão as notas dos desenvolvedores para compilar Criptoreal na sua plataforma nativa. Não são guias completos, mas incluem as notas mais importantes sobre as bibliotecas, compilação, etc.
 
-- [OS X Build Notes](build-osx.md)
-- [Unix Build Notes](build-unix.md)
-- [Windows Build Notes](build-windows.md)
-- [OpenBSD Build Notes](build-openbsd.md)
-- [Gitian Building Guide](gitian-building.md)
+- [Notas de compilação para OS X](build-osx.md)
+- [Notas de compilação para Unix](build-unix.md)
+- [Notas de compilação para Windows](build-windows.md)
+- [Notas de compilação para OpenBSD](build-openbsd.md)
+- [Guia de compilação Gitian](gitian-building.md)
 
-Development
+Desenvolvimento
 ---------------------
-The Criptoreal Core repo's [root README](/README.md) contains relevant information on the development process and automated testing.
+O repositório raiz [README](/README.md) contém informação relevante no processo de desenvolvimento e testes automatizados.
 
-- [Developer Notes](developer-notes.md)
+- [Notas do desenvolvedor](developer-notes.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
-- [Release Notes](release-notes.md)
-- [Release Process](release-process.md)
-- Source Code Documentation ***TODO***
-- [Translation Process](translation_process.md)
-- [Translation Strings Policy](translation_strings_policy.md)
-- [Unit Tests](unit-tests.md)
-- [Unauthenticated REST Interface](REST-interface.md)
-- [Shared Libraries](shared-libraries.md)
+- [Notas de lançamento](release-notes.md)
+- [Processo de lançamento](release-process.md)
+- Documentação do código fonte ***TODO***
+- [Processo de tradução](translation_process.md)
+- [Política de tradução de strings](translation_strings_policy.md)
+- [Testes de Unidade](unit-tests.md)
+- [Interface REST sem autenticação](REST-interface.md)
+- [Bibliotecas compartilhadas](shared-libraries.md)
 - [BIPS](bips.md)
-- [Dnsseed Policy](dnsseed-policy.md)
+- [Políticas Dnsseed](dnsseed-policy.md)
 
-### Resources
-* Discuss on the [CriptorealTalk](https://criptorealtalk.org/) forums, in the Development & Technical Discussion board.
-* Discuss on [#criptoreal](http://webchat.freenode.net/?channels=criptoreal) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=criptoreal).
+### Recursos
+* Discuta no fórum [CriptorealTalk](https://criptorealtalk.org/), no painel de desenvolvimento e discussão técnica.
+* Discussão geral sobre o desenvolvimento de Criptoreal no canal [#criptoreal](http://webchat.freenode.net/?channels=criptoreal) no Freenode. Se você não tem um cliente de IRC, use o [webchat aqui](http://webchat.freenode.net/?channels=criptoreal).
 
-### Miscellaneous
-- [Assets Attribution](assets-attribution.md)
-- [Files](files.md)
-- [Tor Support](tor.md)
-- [Init Scripts (systemd/upstart/openrc)](init.md)
+### Diversos
+- [Atribuição de ativos](assets-attribution.md)
+- [Arquivos](files.md)
+- [Suporte Tor](tor.md)
+- [Scripts Init (systemd/upstart/openrc)](init.md)
 
-License
+Licença
 ---------------------
-Distributed under the [MIT software license](http://www.opensource.org/licenses/mit-license.php).
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
-cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.
+Distribuido sob [a licença de software MIT software](http://www.opensource.org/licenses/mit-license.php).
+Este produto inclui software desenvolvido pela OpenSSL Project para uso no [OpenSSL Toolkit](https://www.openssl.org/).Este produto inclui software criptografado escrito por Eric Young([eay@cryptsoft.com](mailto:eay@cryptsoft.com))e software UPnP escrito por Thomas Bernard.
