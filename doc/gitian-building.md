@@ -1,230 +1,211 @@
-Gitian building
-================
+Compilação Gitian
+=================
 
-*Setup instructions for a Gitian build of Criptoreal Core using a Debian VM or physical system.*
+*Instruções de configuração para uma compilação Gitian do Criptoreal Core usando uma VM Debian ou sistema físico.*
 
-Gitian is the deterministic build process that is used to build the Criptoreal
-Core executables. It provides a way to be reasonably sure that the
-executables are really built from the source on GitHub. It also makes sure that
-the same, tested dependencies are used and statically built into the executable.
+Gitian é o processo de compilação determinista que é usado para compilar os executáveis do Criptoreal Core. Ele fornece uma maneira de estar razoavelmente certo de que os executáveis são realmente criados a partir da fonte no GitHub. Ele também garante que as mesmas dependências testadas sejam usadas e compiladas estaticamente no executável.
 
-Multiple developers build the source code by following a specific descriptor
-("recipe"), cryptographically sign the result, and upload the resulting signature.
-These results are compared and only if they match, the build is accepted and uploaded
-to criptoreal.org.
+Vários desenvolvedores compilam o código fonte seguindo um descritor específico ("receita"), assinam o resultado criptograficamente, e fazem o upload da assinatura resultante. Estes resultados são comparados apenas se eles combinarem, a compilação é aceita e carregada em criptoreal.org.
 
-More independent Gitian builders are needed, which is why this guide exists.
-It is preferred you follow these steps yourself instead of using someone else's
-VM image to avoid 'contaminating' the build.
+Mais compiladores Gitian são necessários, por isso que este guia existe. É preferível que você siga estas etapas ao invés de usar a imagam VM de outra pessoa para evitar "contaminar"a compilação.
 
-Table of Contents
-------------------
+Índice
+------
 
-- [Create a new VirtualBox VM](#create-a-new-virtualbox-vm)
-- [Connecting to the VM](#connecting-to-the-vm)
-- [Setting up Debian for Gitian building](#setting-up-debian-for-gitian-building)
-- [Installing Gitian](#installing-gitian)
-- [Setting up the Gitian image](#setting-up-the-gitian-image)
-- [Getting and building the inputs](#getting-and-building-the-inputs)
-- [Building Criptoreal Core](#building-criptoreal-core)
-- [Building an alternative repository](#building-an-alternative-repository)
-- [Signing externally](#signing-externally)
-- [Uploading signatures](#uploading-signatures)
+- [Criar uma nova VirtualBox VM](#create-a-new-virtualbox-vm)
+- [Conectando a VM](#connecting-to-the-vm)
+- [Configurando o Debian para compilação Gitian](#setting-up-debian-for-gitian-building)
+- [Instalando Gitian](#installing-gitian)
+- [Configurando a imagem Gitian](#setting-up-the-gitian-image)
+- [Obtendo e compilando as entradas](#getting-and-building-the-inputs)
+- [Compilando Criptoreal Core](#building-criptoreal-core)
+- [Compilando um repositório alternativo](#building-an-alternative-repository)
+- [Assinando externamente](#signing-externally)
+- [Fazendo upload de assinaturas](#uploading-signatures)
 
-Preparing the Gitian builder host
----------------------------------
+Preparando o host para o compilador Gitian
+------------------------------------------
 
-The first step is to prepare the host environment that will be used to perform the Gitian builds.
-This guide explains how to set up the environment, and how to start the builds.
+O primeiro passo é preparar o ambinete do host que será usado para executar as compilações do Gitian. Este guia explica como configurar o ambiente e como iniciar as compilações.
 
-Debian Linux was chosen as the host distribution because it has a lightweight install (in contrast to Ubuntu) and is readily available.
-Any kind of virtualization can be used, for example:
-- [VirtualBox](https://www.virtualbox.org/) (covered by this guide)
+Debian Linux foi escolhido como a distribuição do host pois possui uma instalação leve (em contraste com o Ubuntu) e está prontamente disponível. Qualquer tipo de virtualização pode ser utilizado, por exemplo:
+- [VirtualBox](https://www.virtualbox.org/) (coberto por este guia)
 - [KVM](http://www.linux-kvm.org/page/Main_Page)
-- [LXC](https://linuxcontainers.org/), see also [Gitian host docker container](https://github.com/gdm85/tenku/tree/master/docker/gitian-bitcoin-host/README.md).
+- [LXC](https://linuxcontainers.org/), veja também [Gitian host docker container](https://github.com/gdm85/tenku/tree/master/docker/gitian-bitcoin-host/README.md).
 
-You can also install Gitian on actual hardware instead of using virtualization.
+Você também pode instalar o Gitian no hardware real ao invés de usar a virtualização.
 
 Create a new VirtualBox VM
 ---------------------------
-In the VirtualBox GUI click "Create" and choose the following parameters in the wizard:
-
+Na GUI do VirtualBox GUI clique "Novo" e escolha os seguintes parâmetros no assistente:
 ![](gitian-building/create_new_vm.png)
 
-- Type: Linux, Debian (64-bit)
+- Tipo: Linux, Debian (64-bit)
 
 ![](gitian-building/create_vm_memsize.png)
 
-- Memory Size: at least 1024MB, anything less will really slow down the build.
+- Tamanho da memória: pelo menos 1024MB, menos que isso deixará a compilação muito lenta.
 
 ![](gitian-building/create_vm_hard_disk.png)
 
-- Hard Disk: Create a virtual hard disk now
+- Disco rígido: Criar um disco rígido virtual agora
 
 ![](gitian-building/create_vm_hard_disk_file_type.png)
 
-- Hard Disk file type: Use the default, VDI (VirtualBox Disk Image)
+- Tipo de arquivo do disco rígido: Use o padrão, VDI (VirtualBox Disk Image)
 
 ![](gitian-building/create_vm_storage_physical_hard_disk.png)
 
-- Storage on physical hard disk: Dynamically Allocated
+- Armazenamento no disco rígido físico: atribuído dinamicamente
 
 ![](gitian-building/create_vm_file_location_size.png)
 
-- File location and size: at least 40GB; as low as 20GB *may* be possible, but better to err on the safe side
-- Click `Create`
+- Localização e tamanho do arquigo: pelo menos 40GB; por volta de 20GB *pode* ser possível, mas é melhor errar no lado seguro
+- Clique `Create`
 
-Get the [Debian 8.x net installer](http://cdimage.debian.org/debian-cd/8.2.0/amd64/iso-cd/debian-8.2.0-amd64-netinst.iso) (a more recent minor version should also work, see also [Debian Network installation](https://www.debian.org/CD/netinst/)).
-This DVD image can be validated using a SHA256 hashing tool, for example on
-Unixy OSes by entering the following in a terminal:
+Pegue [o instalador Debian 8.x net](http://cdimage.debian.org/debian-cd/8.2.0/amd64/iso-cd/debian-8.2.0-amd64-netinst.iso) (uma versão secundária mais recente também deve funcionar, veja também [Debian Network installation](https://www.debian.org/CD/netinst/)). Esta imagem de DVD pode ser validada usando uma ferramenta de SHA256, por exemplo em Unixy OSes digitando o seguinte no terminal:
 
     echo "d393d17ac6b3113c81186e545c416a00f28ed6e05774284bb5e8f0df39fcbcb9  debian-8.2.0-amd64-netinst.iso" | sha256sum -c
     # (must return OK)
 
-After creating the VM, we need to configure it.
+Após criar a VM, precisamos configurá-la.
 
-- Click the `Settings` button, then go to the `Network` tab. Adapter 1 should be attached to `NAT`.
+- Clique no botão `Settings` , depois vá para a aba `Network`. Adaptador 1 deve estar selecionado como `NAT`.
 
 ![](gitian-building/network_settings.png)
 
-- Click `Advanced`, then `Port Forwarding`. We want to set up a port through which we can reach the VM to get files in and out.
-- Create a new rule by clicking the plus icon.
+- Clique `Advanced`, depois `Port Forwarding`. Nós queremos configurar uma porta através da qual possamos alcançar a VM para obter aquivos dentro e fora.
+- Crie uma nova regra clicando no botão com sinal de mais.
 
 ![](gitian-building/port_forwarding_rules.png)
 
-- Set up the new rule the following way:
-  - Name: `SSH`
-  - Protocol: `TCP`
-  - Leave Host IP empty
-  - Host Port: `22222`
-  - Leave Guest IP empty
-  - Guest Port: `22`
+- Configure a nova regra da seguinte maneira:
+  - Nome: `SSH`
+  - Protocolo: `TCP`
+  - Deixe Host IP vazio
+  - Porta do Host: `22222`
+  - Deixe o Guest IP vazio
+  - Porta Guest: `22`
 
-- Click `Ok` twice to save.
+- Clique `Ok` duas vezes para salvar.
 
-Then start the VM. On the first launch you will be asked for a CD or DVD image. Choose the downloaded iso.
+Então inicie a VM. Na primeira vez em que carregar o sistema, será solicitado a imagem de um DVD ou CD. Escolha a iso que foi baixada anteriormente.
 
 ![](gitian-building/select_startup_disk.png)
 
-Installing Debian
+Instalando Debian
 ------------------
 
-This section will explain how to install Debian on the newly created VM.
+Esta parte irá explicar como instalar o Debian na VM recém criada.
 
-- Choose the non-graphical installer.  We do not need the graphical environment; it will only increase installation time and disk usage.
+- Escolha o instalador não gráfico.  Não precisamos do ambiente gráfico; ele apenas aumentará o tempo de instalação e espaço em disco.
 
 ![](gitian-building/debian_install_1_boot_menu.png)
 
-**Note**: Navigating in the Debian installer:
-To keep a setting at the default and proceed, just press `Enter`.
-To select a different button, press `Tab`.
+**Nota**: Navegando pelo instalador Debian: Para manter uma configuração padrão e continuar, apenas clique `Enter`. Para selecionar um botão diferente, pressione `Tab`.
 
-- Choose locale and keyboard settings (doesn't matter, you can just go with the defaults or select your own information)
-
+- Escolha configurações locais e a do teclado (não importa, você pode simplesmente manter as configurações ou colocar sua própria informação)
 ![](gitian-building/debian_install_2_select_a_language.png)
 ![](gitian-building/debian_install_3_select_location.png)
 ![](gitian-building/debian_install_4_configure_keyboard.png)
 
-- The VM will detect network settings using DHCP, this should all proceed automatically
-- Configure the network:
+- A VM detectará configurações de rede usando DHCP, isto deve ser feito automaticamente
+- Configure a rede:
   - Hostname `debian`.
-  - Leave domain name empty.
+  - Deixe o nome de domínio vazio.
 
 ![](gitian-building/debian_install_5_configure_the_network.png)
 
-- Choose a root password and enter it twice (remember it for later)
+- Escolha uma senha de root e tecle enter (guarde essa senha para uso mais tarde)
 
 ![](gitian-building/debian_install_6a_set_up_root_password.png)
 
-- Name the new user `debian` (the full name doesn't matter, you can leave it empty)
-- Set the account username as `debian`
+- Nomeie o novo usuário `debian` (o nome completo não importa, você pode deixar isso vazio)
+- Configure o username da conta como `debian`
 
 ![](gitian-building/debian_install_7_set_up_user_fullname.png)
 ![](gitian-building/debian_install_8_set_up_username.png)
 
-- Choose a user password and enter it twice (remember it for later)
+- Escolha uma senha de usuário e informe duas vezes (guarde esta senha para uso posterior)
 
 ![](gitian-building/debian_install_9_user_password.png)
 
-- The installer will set up the clock using a time server; this process should be automatic
-- Set up the clock: choose a time zone (depends on the locale settings that you picked earlier; specifics don't matter)  
+- O instalador irá configurar o relógio usando um servidor de horário; este processo deve ser automático
+- Configure o relógio: escolha um fuso horário (depende das configurações de localidade que você escolheu anteriormente; especificações não importam)  
 
 ![](gitian-building/debian_install_10_configure_clock.png)
 
-- Disk setup
-  - Partitioning method: Guided - Use the entire disk
+- Configuração de disco
+  - Método de particionamento: Guiado - Use todo o disco
 
 ![](gitian-building/debian_install_11_partition_disks.png)
 
-  - Select disk to partition: SCSI1 (0,0,0)
+  - Selecione disco para partição: SCSI1 (0,0,0)
 
 ![](gitian-building/debian_install_12_choose_disk.png)
 
-  - Finish partitioning and write changes to disk -> *Yes* (`Tab`, `Enter` to select the `Yes` button)
+ - Termine o particionamento e grave as mudanças no disco -> *Sim* (`Tab`, `Enter` para selecionar o botão `Yes`)
 
 ![](gitian-building/debian_install_14_finish.png)
 ![](gitian-building/debian_install_15_write_changes.png)
 
-- The base system will be installed, this will take a minute or so
-- Choose a mirror (any will do)
+- O sistema base será instalado, isto levará um minuto ou mais
+- Escolha um espelho (qualquer um serve)
 
 ![](gitian-building/debian_install_16_choose_a_mirror.png)
 
-- Enter proxy information (unless you are on an intranet, leave this empty)
+- Digite as informações de proxy (a não ser que você esteja usando intranet, deixe isto vazio)
 
 ![](gitian-building/debian_install_18_proxy_settings.png)
 
-- Wait a bit while 'Select and install software' runs
-- Participate in popularity contest -> *No*
-- Choose software to install. We need just the base system.
-- Make sure only 'SSH server' and 'Standard System Utilities' are checked
-- Uncheck 'Debian Desktop Environment' and 'Print Server'
+- Aguarde um momento enquanto o 'Selecione e instale software' é executado
+- Participar no concurso de popularidade -> *Não*
+- Escolha o software para instalar. Precisamos apenas do sistema base.
+- Certifique-se de que somente 'SSH server' e 'Standard System Utilities' estejam marcados
+- Desmarque 'Debian Desktop Environment' e 'Print Server'
 
 ![](gitian-building/debian_install_19_software_selection.png)
 
-- Install the GRUB boot loader to the master boot record? -> Yes
+- Instale o boot loader GRUB no registro mestre de inicialização? -> Sim
 
 ![](gitian-building/debian_install_20_install_grub.png)
 
-- Device for boot loader installation -> ata-VBOX_HARDDISK
+- Dispositivo para a instalação do boot loader -> ata-VBOX_HARDDISK
 
 ![](gitian-building/debian_install_21_install_grub_bootloader.png)
 
-- Installation Complete -> *Continue*
-- After installation, the VM will reboot and you will have a working Debian VM. Congratulations!
+- Instalação completa -> *Continue*
+- Após instalação, a VM irá reiniciar e você terá uma VM Debian totalmente funcional. Parabéns!
 
 ![](gitian-building/debian_install_22_finish_installation.png)
 
 
-After Installation
+Após a Instalação
 -------------------
-The next step in the guide involves logging in as root via SSH.
-SSH login for root users is disabled by default, so we'll enable that now.
+O próximo passo no guia envolve iniciar sessão como root via SSH. O login SSH para usuários root está desativado por padrão, devemos habilitar isso agora.
 
-Login to the VM using username `root` and the root password you chose earlier.
-You'll be presented with a screen similar to this.
+Faça o login na VM com o username `root` e com a senha de root que você escolheu anteriormente. Você deverá ver uma tela parecida com esta.
 
 ![](gitian-building/debian_root_login.png)
 
-Type:
+Digite:
 
 ```
 sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 ```
-and press enter. Then,
+pressione enter. Então,
 ```
 /etc/init.d/ssh restart
 ```
-and enter to restart SSH. Logout by typing 'logout' and pressing 'enter'.
+e pressione enter para reiniciar o SSH. Faça o logout digitando 'logout' e pressionando 'enter'.
 
-Connecting to the VM
+Conectando a VM
 ----------------------
 
-After the VM has booted you can connect to it using SSH, and files can be copied from and to the VM using a SFTP utility.
-Connect to `localhost`, port `22222` (or the port configured when installing the VM).
-On Windows you can use [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [WinSCP](http://winscp.net/eng/index.php).
+Após a inicialização da VM você já pode se conectar usando SSH, os arquivos podem ser copiados para a VM usando um programa de SFTP.
+Conecte a `localhost`, porta `22222` (ou a porta que você escolheu ao configurar a VM). No Windows você pode usar [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) e [WinSCP](http://winscp.net/eng/index.php).
 
-For example, to connect as `root` from a Linux command prompt use
+Por exemplo, para conectar como `root` no prompt de comando Linux use
 
     $ ssh root@localhost -p 22222
     The authenticity of host '[localhost]:22222 ([127.0.0.1]:22222)' can't be established.
@@ -241,22 +222,21 @@ For example, to connect as `root` from a Linux command prompt use
     permitted by applicable law.
     root@debian:~#
 
-Replace `root` with `debian` to log in as user.
+Substitua `root` por `debian` para logar como usuário.
 
-Setting up Debian for Gitian building
---------------------------------------
+Configurando o Debian para compilação Gitian
+--------------------------------------------
 
-In this section we will be setting up the Debian installation for Gitian building.
+Nesta seção, estaremos configurando a instalação Debian para a compilação Gitian.
 
-First we need to log in as `root` to set up dependencies and make sure that our
-user can use the sudo command. Type/paste the following in the terminal:
+Primeiro, precisamos fazer login como `root` para configurar dependências e garantir que nosso usuário possa usar o comando sudo. Copie/cole o seguinte comando no terminal:
 
 ```bash
 apt-get install git ruby sudo apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl
 adduser debian sudo
 ```
 
-Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
+Em seguida, configura o LXC e o restante com as linhas a seguir, que nada mais é do que uma confusão complexa de configurações e soluções alternativas:
 
 ```bash
 # the version of lxc-start in Debian needs to run as root, so make sure
@@ -277,16 +257,14 @@ echo 'export LXC_GUEST_IP=10.0.3.5' >> /home/debian/.profile
 reboot
 ```
 
-At the end the VM is rebooted to make sure that the changes take effect. The steps in this
-section only need to be performed once.
+No final, a VM é reiniciada para garantir que as alterações tenham efeito. Os passos desta seção só precisam ser executados uma única vez.
 
-Installing Gitian
+Instalando Gitian
 ------------------
 
-Re-login as the user `debian` that was created during installation.
-The rest of the steps in this guide will be performed as that user.
+Refaça o login com o usuário `debian` que foi criado durante a instalação. O restante dos passos desde guia serão executados com este usuário.
 
-There is no `python-vm-builder` package in Debian, so we need to install it from source ourselves,
+Não existe o pacote `python-vm-builder` no Debian, então nós mesmos devemos instalar a partir da fonte
 
 ```bash
 wget http://archive.ubuntu.com/ubuntu/pool/universe/v/vm-builder/vm-builder_0.12.4+bzr494.orig.tar.gz
@@ -298,9 +276,9 @@ sudo python setup.py install
 cd ..
 ```
 
-**Note**: When sudo asks for a password, enter the password for the user *debian* not for *root*.
+**Nota**: Quando o sudo pedir uma senha, informe a senha para o usuário *debian* não o *root*.
 
-Clone the git repositories for Criptoreal Core and Gitian.
+Clone os repositórios git para criptoreal e Gitian.
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
@@ -310,57 +288,50 @@ git clone https://github.com/criptoreal/criptoreal
 Setting up the Gitian image
 -------------------------
 
-Gitian needs a virtual image of the operating system to build in.
-Currently this is Ubuntu Precise x86_64.
-This image will be copied and used every time that a build is started to
-make sure that the build is deterministic.
-Creating the image will take a while, but only has to be done once.
+Gitian precisa de uma imagem virtual do sistema operacional para compilar. Atualmente é a Ubuntu Precise x86_64.
+Esta imagem será copiada e usada sempre que uma compilação for iniciada para garantir que esta compilação seja determinista.
+Criar a imagem levará um tempo, mas precisa ser feita uma única vez.
 
-Execute the following as user `debian`:
+Execute o seguinte como usuário `debian`:
 
 ```bash
 cd gitian-builder
 bin/make-base-vm --lxc --arch amd64 --suite trusty
 ```
 
-There will be a lot of warnings printed during the build of the image. These can be ignored.
+Você verá muitos avisos na tela durante a instalação da imagem. Basta ignorá-los.
 
-**Note**: When sudo asks for a password, enter the password for the user *debian* not for *root*.
+**Nota**: Quando sudo pedir uma senha, informe a senha para o usuário *debian* não para *root*.
 
-**Note**: Repeat this step when you have upgraded to a newer version of Gitian.
+**Nota**: Repita este processo quando você fizer o upgramde para uma nova versão do Gitian.
 
-**Note**: if you get the error message *"bin/make-base-vm: mkfs.ext4: not found"* during this process you have to make the following change in file *"gitian-builder/bin/make-base-vm"* at line 117:
+**Nota**: se você receber a mensagem de erro *"bin/make-base-vm: mkfs.ext4: not found"* durante este processo, você deve fazer a seguinte alteração no arquivo *"gitian-builder/bin/make-base-vm"* na linha 117:
+
 ```bash
 # mkfs.ext4 -F $OUT-lxc
 /sbin/mkfs.ext4 -F $OUT-lxc # (some Gitian environents do NOT find mkfs.ext4. Some do...)
 ```
 
-Getting and building the inputs
+Obtendo e compilando as entradas
 --------------------------------
 
-Follow the instructions in [doc/release-process.md](release-process.md#fetch-and-build-inputs-first-time-or-when-dependency-versions-change)
-in the Criptoreal Core repository under 'Fetch and build inputs' to install sources which require
-manual intervention. Also optionally follow the next step: 'Seed the Gitian sources cache
-and offline git repositories' which will fetch the remaining files required for building
-offline.
+Siga as instruções em [doc/release-process.md](release-process.md#fetch-and-build-inputs-first-time-or-when-dependency-versions-change) no repositório Criptoreal Core em 'Obter e criar entradas' para instalar fontes que exigem intervenção manual. Siga também a próxima etapa (opcional): 'Semeie o cache de fontes do Gitian e os repositórios git offline' que irá buscar os arquivos restantes necessários para a compilação offline.
 
-Building Criptoreal Core
+Compilando o Criptoreal Core
 ----------------
 
-To build Criptoreal Core (for Linux, OS X and Windows) just follow the steps under 'perform
-Gitian builds' in [doc/release-process.md](release-process.md#perform-gitian-builds) in the Criptoreal Core repository.
+Para compilar o Criptoreal Core (para Linux, OS X e Windows) apenas siga os passos em 'fazer compilações Gitian' em [doc/release-process.md](release-process.md#perform-gitian-builds) no repositório criptoreal.
 
-This may take some time as it will build all the dependencies needed for each descriptor.
-These dependencies will be cached after a successful build to avoid rebuilding them when possible.
+Isto pode levar algum tempo, pois ele irá criar todas as dependências necessárias para cada descritor. Estas dependências serão armazenadas em cache após uma compilação bem-sucedida para evitar uma recompilação quando possível.
 
-At any time you can check the package installation and build progress with
+A qualquer momento, você pode verificar a instalação do pacote e compilar o progresso com
 
 ```bash
 tail -f var/install.log
 tail -f var/build.log
 ```
 
-Output from `gbuild` will look something like
+A saída de `gbuild` será algo parecido com
 
 ```bash
     Initialized empty Git repository in /home/debian/gitian-builder/inputs/criptoreal/.git/
@@ -385,14 +356,12 @@ Output from `gbuild` will look something like
     lxc-start: Connection refused - inotify event with no name (mask 32768)
     Running build script (log in var/build.log)
 ```
-Building an alternative repository
------------------------------------
+Compilando um repositório alternativo
+-------------------------------------
 
-If you want to do a test build of a pull on GitHub it can be useful to point
-the Gitian builder at an alternative repository, using the same descriptors
-and inputs.
+Se você quiser fazer uma compilação de teste de um pull no GitHub, pode ser útil apontar o compilador Gitian em um repositório alternativo, usando os mesmos descritores e entradas.
 
-For example:
+Por exemplo:
 ```bash
 URL=https://github.com/crowning-/criptoreal.git
 COMMIT=b616fb8ef0d49a919b72b0388b091aaec5849b96
@@ -401,19 +370,14 @@ COMMIT=b616fb8ef0d49a919b72b0388b091aaec5849b96
 ./bin/gbuild --commit criptoreal=${COMMIT} --url criptoreal=${URL} ../criptoreal/contrib/gitian-descriptors/gitian-osx.yml
 ```
 
-Building fully offline
------------------------
+Compilando totalmente offline
+-----------------------------
 
-For building fully offline including attaching signatures to unsigned builds, the detached-sigs repository
-and the criptoreal git repository with the desired tag must both be available locally, and then gbuild must be
-told where to find them. It also requires an apt-cacher-ng which is fully-populated but set to offline mode, or
-manually disabling gitian-builder's use of apt-get to update the VM build environment.
+Para compilar de maneira totalmente offline, incluindo anexar assinaturas a compilações ainda não assinadas, o repositório sigs destacado e o repositório git criptoreal com a tag desejada devem estar disponíveis localmente e em seguida, o gbuild deve ser informado sobre onde encontrá-los. Também requer um apt-cacher-ng que esteja totalmente preenchido, mas configurado para o modo offline, ou desabilitando manualmente o uso do gitian-builder do apt-get para atualizar o ambiente de compilação VM.
 
-To configure apt-cacher-ng as an offline cacher, you will need to first populate its cache with the relevant
-files. You must additionally patch target-bin/bootstrap-fixup to set its apt sources to something other than
-plain archive.ubuntu.com: us.archive.ubuntu.com works.
+Para configurar o apt-cacher-ng como um cache offline, você precisará primeiro preencher seu cache com os arquivos relevantes. Você deve também corrigir o binário/bootstrap-fixup para definir as apt sources de maneira diferente da qual o simples archive.ubuntu.com: us.archive.ubuntu.com funciona.
 
-So, if you use LXC:
+Então, se você usa LXC:
 
 ```bash
 export PATH="$PATH":/path/to/gitian-builder/libexec
@@ -429,7 +393,7 @@ LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root apt-get -q -y purge grub
 LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root -e DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 ```
 
-And then set offline mode for apt-cacher-ng:
+E em seguida, defina o modo offline para apt-cacher-ng:
 
 ```
 /etc/apt-cacher-ng/acng.conf
@@ -440,7 +404,7 @@ Offlinemode: 1
 service apt-cacher-ng restart
 ```
 
-Then when building, override the remote URLs that gbuild would otherwise pull from the Gitian descriptors::
+Então ao compilar, substitua as URLs remotas que gbuild poderia extrair dos descritores Gitian::
 ```bash
 
 cd /some/root/path/
@@ -452,16 +416,14 @@ SIGPATH=/some/root/path/criptoreal-detached-sigs.git
 ./bin/gbuild --url criptoreal=${BTCPATH},signature=${SIGPATH} ../criptoreal/contrib/gitian-descriptors/gitian-win-signer.yml
 ```
 
-Signing externally
--------------------
+Assinando externamente
+----------------------
 
-If you want to do the PGP signing on another device, that's also possible; just define `SIGNER` as mentioned
-and follow the steps in the build process as normal.
+Se você quer fazer a assinatura PGP em outro dispositivo, isto também é possível; basta definir `SIGNER` como mencionado e seguir as etapas no processo de compilação da maneira normal.
 
-    gpg: skipped "crowning-": secret key not available
+    gpg: skipped "laanwj": chave secreta não encontrada
 
-When you execute `gsign` you will get an error from GPG, which can be ignored. Copy the resulting `.assert` files
-in `gitian.sigs` to your signing machine and do
+Quando você executa `gsign` você receberá um erro do GPG, que não pode ser ignorado. Copie os arquivos `.assert` resultantes em `gitian.sigs` em sua máquina de assinaturas e faça
 
 ```bash
     gpg --detach-sign ${VERSION}-linux/${SIGNER}/criptoreal-linux-build.assert
@@ -469,13 +431,11 @@ in `gitian.sigs` to your signing machine and do
     gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/criptoreal-osx-build.assert
 ```
 
-This will create the `.sig` files that can be committed together with the `.assert` files to assert your
-Gitian build.
+Isto irá criar os arquivos `.sig` que podem ser usados juntamente com os arquivos `.assert` files para afirmar sua compilação Gitian.
 
-Uploading signatures (not yet implemented)
+Fazendo upload de assinaturas (ainda não implementado)
 ---------------------
 
-In the future it will be possible to push your signatures (both the `.assert` and `.assert.sig` files) to the
-[criptoreal/gitian.sigs](https://github.com/criptoreal/gitian.sigs/) repository, or if that's not possible to create a pull
-request.
-There will be an official announcement when this repository is online.
+No futuro será possível enviar suas assinaturas (tanto o arquivo `.assert` quanto o `.assert.sig`) para o
+[criptoreal/gitian.sigs.cripto](https://github.com/criptoreal/gitian.sigs.cripto/) repositório criptoreal ou se isso não for possível, crie uma pull request.
+Haverá um anúncio oficial quando o repositório estiver online.
