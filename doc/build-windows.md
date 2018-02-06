@@ -1,26 +1,22 @@
-WINDOWS BUILD NOTES
+NOTAS DE COMPILAÇÃO DO WINDOWS
 ====================
 
-Some notes on how to build Criptoreal Core for Windows.
+Algumas notas em como compilar Criptoreal Core no Windows.
 
-Most developers use cross-compilation from Ubuntu to build executables for
-Windows. This is also used to build the release binaries.
+A maioria dos desenvolvedores usa a compilação cruzada do Ubuntu para criar executáveis para o Windows. Isto também é usado para compilar os binários de lançamento.
 
-Building on Windows itself is possible (for example using msys / mingw-w64),
-but no one documented the steps to do this. If you are doing this, please contribute them.
+Compilar no Windows é possível (por exemplo usando msys / mingw-w64), mas ninguém documentou as etapas para fazer este processo. Se você está fazendo isto, contribua com a comunidade.
 
 Cross-compilation
 -------------------
 
-These steps can be performed on, for example, an Ubuntu VM. The depends system
-will also work on other Linux distributions, however the commands for
-installing the toolchain will be different.
+Estas etapas podem ser realizadas em, por exemplo, uma VM do Ubuntu. O sistema dependente também funcionará em outras distribuições Linux, entretanto, os comandos para instalar a cadeia de ferramentas serão diferentes.
 
-First install the toolchains:
+Primeiro instale as toolchains:
 
     sudo apt-get install g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64 mingw-w64-x86-64-dev
 
-To build executables for Windows 32-bit:
+Para compilar executáveis para Windows 32-bit:
 
     cd depends
     make HOST=i686-w64-mingw32 -j4
@@ -28,7 +24,7 @@ To build executables for Windows 32-bit:
     ./configure --prefix=`pwd`/depends/i686-w64-mingw32
     make
 
-To build executables for Windows 64-bit:
+Para compilar executáveis para Windows 64-bit:
 
     cd depends
     make HOST=x86_64-w64-mingw32 -j4
@@ -36,5 +32,5 @@ To build executables for Windows 64-bit:
     ./configure --prefix=`pwd`/depends/x86_64-w64-mingw32
     make
 
-For further documentation on the depends system see [README.md](../depends/README.md) in the depends directory.
+Para mais documentação no sistema de dependências veja [README.md](../depends/README.md) no diretório depends.
 
