@@ -1,56 +1,53 @@
-### Usage
+### Uso
 
-To build dependencies for the current arch+OS:
+Para compilar dependências para o arch+OS atual:
 
     make
 
-To build for another arch/OS:
+Para compilar para outro arch/OS:
 
     make HOST=host-platform-triplet
 
-For example:
+Por exemplo:
 
     make HOST=x86_64-w64-mingw32 -j4
 
-A prefix will be generated that's suitable for plugging into Criptoreal's
-configure. In the above example, a dir named x86_64-w64-mingw32 will be
-created. To use it for Criptoreal:
+Será gerado um prefiox apropriado para se conectar a configuração do Criptoreal. No exemplo acima, um diretório chamado x86_64-w64-mingw32 será criado. Para usá-lo para Criptoreal:
 
     ./configure --prefix=`pwd`/depends/x86_64-w64-mingw32
 
-Common `host-platform-triplets` for cross compilation are:
+Plataformas comuns `host-platform-triplets` para compilação cruzada são:
 
-- `i686-w64-mingw32` for Win32
-- `x86_64-w64-mingw32` for Win64
-- `x86_64-apple-darwin11` for MacOSX
-- `arm-linux-gnueabihf` for Linux ARM
+- `i686-w64-mingw32` para Win32
+- `x86_64-w64-mingw32` para Win64
+- `x86_64-apple-darwin11` para MacOSX
+- `arm-linux-gnueabihf` para Linux ARM
 
-No other options are needed, the paths are automatically configured.
+Não são necessárias outras opções, os caminhos são configurados automaticamente.
 
-Dependency Options:
-The following can be set when running make: make FOO=bar
+Opções de dependência:
+O seguinte pode ser configuradoo ao executar: make FOO=bar
 
-    SOURCES_PATH: downloaded sources will be placed here
-    BASE_CACHE: built packages will be placed here
-    SDK_PATH: Path where sdk's can be found (used by OSX)
-    FALLBACK_DOWNLOAD_PATH: If a source file can't be fetched, try here before giving up
-    NO_QT: Don't download/build/cache qt and its dependencies
-    NO_WALLET: Don't download/build/cache libs needed to enable the wallet
-    NO_UPNP: Don't download/build/cache packages needed for enabling upnp
-    DEBUG: disable some optimizations and enable more runtime checking
+    SOURCES_PATH: As fontes baixadas serão colocadas aqui
+    BASE_CACHE: os pacotes compilados serão colocados aqui
+    SDK_PATH: Caminho onde sdk's podem ser encontrados (usados por OSX)
+    FALLBACK_DOWNLOAD_PATH: Se um arquivo de origem não puder ser obtido, tente por aqui antes de desistir
+    NO_QT: Não faça download/compilação'/cache qt e suas dependências
+    NO_WALLET: Não faça download/compilação/cache de libs necessários para habilitar a carteira
+    NO_UPNP: Não faça download/compilação/cache de pacotes necessários para habilitar upnp
+    DEBUG: desabilita algumas otimizações e habilita uma maior verificação de tempo de execução
+    
+Se alguns pacotes não forem compilados, por exemplo `make NO_WALLET=1`, as opções apropriadas serão passadas para a configuração do Criptoreal Core's. Neste caso, `--disable-wallet`.
 
-If some packages are not built, for example `make NO_WALLET=1`, the appropriate
-options will be passed to Criptoreal Core's configure. In this case, `--disable-wallet`.
+Alvos adicionais:
 
-Additional targets:
+    download: execute 'make download' para buscar todas as fontes sem compilá-las
+    download-osx: execute 'make download-osx' para buscar todas as fontes necessárias para as compilações osx
+    download-win: execute 'make download-win' para obter todas as fontes necessárias para compilações windows
+    download-linux: execute 'make download-linux' para buscar todas as fontes necessárias para as compilações do linux
 
-    download: run 'make download' to fetch all sources without building them
-    download-osx: run 'make download-osx' to fetch all sources needed for osx builds
-    download-win: run 'make download-win' to fetch all sources needed for win builds
-    download-linux: run 'make download-linux' to fetch all sources needed for linux builds
+### Outras documentações
 
-### Other documentation
-
-- [description.md](description.md): General description of the depends system
-- [packages.md](packages.md): Steps for adding packages
+- [description.md](description.md): Descrição geral do sistema dependente
+- [packages.md](packages.md): Passos para adicionar pacotes
 
