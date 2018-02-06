@@ -1,119 +1,104 @@
-Mac OS X Build Instructions and Notes
+Notas e instruções de compilação no Mac OS X
 ====================================
-This guide will show you how to build criptoreald (headless client) for OSX.
+Este guia irá mostrar como compilar criptoreald no OSX.
 
-Notes
+Notas
 -----
 
-* Tested on OS X 10.7 through 10.11 on 64-bit Intel processors only.
+* Testado no OS X 10.7 até a versão 10.11 somente em processadores 64-bit Intel.
 
-* All of the commands should be executed in a Terminal application. The
-built-in one is located in `/Applications/Utilities`.
+* Todos os comandos devem ser executados em um aplicativo de Terminal. O nativo está localizado em `/Applications/Utilities`.
 
-Preparation
+Preparação
 -----------
 
-You need to install Xcode with all the options checked so that the compiler
-and everything is available in /usr not just /Developer. Xcode should be
-available on your OS X installation media, but if not, you can get the
-current version from https://developer.apple.com/xcode/. If you install
-Xcode 4.3 or later, you'll need to install its command line tools. This can
-be done in `Xcode > Preferences > Downloads > Components` and generally must
-be re-done or updated every time Xcode is updated.
+Você precisa instalar o Xcode com todas as opções marcadas para que o compilador e tudo mais esteja disponível em /usr not just /Developer. Xcode deve estar disponivel em sua mídia de instalação do OS X, mas, caso não esteja, você pode obter a versão atual em https://developer.apple.com/xcode/. Se você instalar Xcode 4.3 ou uma versão mais recente,  você precisará instalar o utilitário de linhas de comendo. Isto pode ser feito em `Xcode > Preferences > Downloads > Components` e geralmente deve ser feito novamente cada vez que o Xcode é atualizado.
 
-You will also need to install [Homebrew](http://brew.sh) in order to install library
-dependencies.
+Você também deverá instalar o [Homebrew](http://brew.sh) para instalar as dependências da biblioteca.
 
-The installation of the actual dependencies is covered in the instructions
-sections below.
+A instalação das dependências está coberta nas instruções abaixo.
 
-Instructions: Homebrew
+Instruções: Homebrew
 ----------------------
 
-#### Install dependencies using Homebrew
+#### Instalar dependências usando Homebrew
 
     brew install autoconf automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf libevent qt
 
-NOTE: Building with Qt4 is still supported, however, doing so could result in a broken UI. Therefore, building with Qt5 is recommended. Be aware that Qt5 5.7+ requires C++11 compiler support.
+NOTA:Compilar com Qt4 ainda é suportado, entretanto, pode resultar em UI quebrada. Portanto, compilar com Qt5 é recomendado. Esteja atento que Qt5 5.7+ requer suporte ao compilador C++11.
 
-### Building Criptoreal Core
+### Compilando Criptoreal Core
 
-1. Clone the GitHub tree to get the source code and go into the directory.
+1. Copie a árvore do GitHub para pagar o código fonte e chegar ao diretório.
 
         git clone https://github.com/criptoreal/criptoreal.git
         cd criptoreal
 
-2.  Build Criptoreal Core:
-    This will configure and build the headless criptoreal binaries as well as the gui (if Qt is found).
-    You can disable the gui build by passing `--without-gui` to configure.
+2.  Compilar Criptoreal Core:
+    Isto irá configurar e copiar os binários criptoreal assim como a gui (se Qt for encontrado).
+    Você pode desativar a compilaçãod da gui informando `--without-gui` para configurar.
 
         ./autogen.sh
         ./configure
         make
 
-3.  It is also a good idea to build and run the unit tests:
+3.  Também é uma boa ideia para compilar e executar os testes de unidade:
 
         make check
 
-4.  (Optional) You can also install criptoreald to your path:
+4.  (Opcional) Você também pode instalar criptoreald no seu caminho:
 
         make install
 
 Use Qt Creator as IDE
 ------------------------
-You can use Qt Creator as IDE, for debugging and for manipulating forms, etc.
-Download Qt Creator from https://www.qt.io/download/. Download the "community edition" and only install Qt Creator (uncheck the rest during the installation process).
+Você pode usar o Qt Creator como IDE, para depurar e manipular formulários, etc.
+Faça o download do Qt Creator em https://www.qt.io/download/. Faça o download da "community edition" e instale somente o Qt Creator (desmarque o restante durante o processo de instalação).
 
-1. Make sure you installed everything through Homebrew mentioned above
-2. Do a proper ./configure --enable-debug
-3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
-4. Enter "criptoreal-qt" as project name, enter src/qt as location
-5. Leave the file selection as it is
-6. Confirm the "summary page"
-7. In the "Projects" tab select "Manage Kits..."
-8. Select the default "Desktop" kit and select "Clang (x86 64bit in /usr/bin)" as compiler
-9. Select LLDB as debugger (you might need to set the path to your installation)
-10. Start debugging with Qt Creator
+1. Tenha certeza de que você instalou tudo através do Homebrew mencionado acima
+2. Execute um ./configure --enable-debug
+3. No Qt Creator escolha "Novo Projeto" -> Importar Projeto -> Importar Projeto Existente
+4. Digite "criptoreal-qt" como nome do projeto, informe src/qt como local
+5. Deixe a seleção do arquivo como está
+6. Confirme a "página de resumo"
+7. Na aba "Projetos" selecione "Gerenciar Kits..."
+8. Escolha o kit "Desktop" padrão e selecione "Clang (x86 64bit in /usr/bin)" como compilador
+9. Selecione LLDB como depurador (talvez seja necessário configurar o caminho para sua instalação)
+10. Comece a depurar com o Qt Creator
 
-Creating a release build
+Criando uma versão de lançamento
 ------------------------
-You can ignore this section if you are building `criptoreald` for your own use.
+Você pode ignorar isto se estiver compilando `criptoreald` para uso próprio.
 
-criptoreald/criptoreal-cli binaries are not included in the Criptoreal-Qt.app bundle.
+criptoreald/criptoreal-cli binaries não estão incluídos no Criptoreal-Qt.app.
 
-If you are building `criptoreald` or `Criptoreal Core` for others, your build machine should be set up
-as follows for maximum compatibility:
+Se você está compilando `criptoreald` ou `Criptoreal Core` para outros, sua máquina de compilação deve ser configurada da seguinte forma para compatibilidade máxima:
 
-All dependencies should be compiled with these flags:
+Todas as dependências devem ser compiladas com estas flags:
 
  -mmacosx-version-min=10.7
  -arch x86_64
  -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
 
-Once dependencies are compiled, see [doc/release-process.md](release-process.md) for how the Criptoreal Core
-bundle is packaged and signed to create the .dmg disk image that is distributed.
+Uma vez que as dependências estejam compiladas, veja [doc/release-process.md](release-process.md) para saber como o pacote do Criptoreal Core é fechado e assinado para criar a imagem de disco .dmg que é distribuída.
 
-Running
+Executando
 -------
 
-It's now available at `./criptoreald`, provided that you are still in the `src`
-directory. We have to first create the RPC configuration file, though.
+Está disponível agora em `./criptoreald`, desde que você ainda esteja no diretório `src`. No entanto, devemos primeiro criar o arquivo de configuração RPC.
 
-Run `./criptoreald` to get the filename where it should be put, or just try these
-commands:
+Execute `./criptoreald` para obter o nome do arquivo onde deve ser colocado, ou apenas teste estes comandos:
 
     echo -e "rpcuser=criptorealrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Criptoreal/criptoreal.conf"
     chmod 600 "/Users/${USER}/Library/Application Support/Criptoreal/criptoreal.conf"
 
-The next time you run it, it will start downloading the blockchain, but it won't
-output anything while it's doing this. This process may take several hours;
-you can monitor its process by looking at the debug.log file, like this:
+Na próxima vez que você executá-lo, ele começara a baixar a blockchain, mas não emitirá nada enquanto estiver fazendo isso. Este processo pode levar várias horas; você pode monitorar observando o arquivo debug.log, desta forma:
 
     tail -f $HOME/Library/Application\ Support/Criptoreal/debug.log
 
-Other commands:
+Outros comandos:
 -------
 
-    ./criptoreald -daemon # to start the criptoreal daemon.
-    ./criptoreal-cli --help  # for a list of command-line options.
-    ./criptoreal-cli help    # When the daemon is running, to get a list of RPC commands
+    ./criptoreald -daemon # para iniciar a daemon do criptoreal.
+    ./criptoreal-cli --help  # para uma lista de opções de linha de comando.
+    ./criptoreal-cli help    # Quando o daemon está sendo executado, para obter uma lista de comandos RPC 
