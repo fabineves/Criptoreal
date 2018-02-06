@@ -1,20 +1,18 @@
-Developer Notes
+Notas do desenvolvedor
 ===============
 
-Various coding styles have been used during the history of the codebase,
-and the result is not very consistent. However, we're now trying to converge to
-a single style, so please use it in new code. Old code will be converted
-gradually.
-- Basic rules specified in src/.clang-format. Use a recent clang-format-3.5 to format automatically.
-  - Braces on new lines for namespaces, classes, functions, methods.
-  - Braces on the same line for everything else.
-  - 4 space indentation (no tabs) for every block except namespaces.
-  - No indentation for public/protected/private or for namespaces.
-  - No extra spaces inside parenthesis; don't do ( this )
-  - No space after function names; one space after if, for and while.
-  - Align pointers and references to the left i.e. use `type& var` and not `type &var`.
+Vários estilos de codificação foram usados durante o histórico do código base e o resultado não foi muito consistente. Entretanto, estamos tentando convergir para um estilo único, então use-o em um novo código. O codigo antigo será convertido gradualmente.
 
-Block style example:
+  - Regras básicas especificadas em src/.clang-format. Use um formato clang recente 3.5 para formatar automaticamente.
+  - Chaves em novas linhas para namespaces, classes, funções, métodos.
+  - Chaves na mesma linha para o restante.
+  - 4 indentações de espaço (sem abas) para cada bloco exceto namespaces.
+  - Sem indentação para `public`/`protected`/`private` ou para `namespace`.
+  - Sem espaço extra dentro de parênteses; não faça ( isto )
+  - Sem espaço após os nomes das funções; um espaço após `if`, `for` e `while`.
+  - Alinhe ponteiros e referências à esquerda, por exemplo,  use `type& var` e não `type &var`.
+
+Exemplo de estilo de bloco:
 ```c++
 namespace foo
 {
@@ -22,7 +20,7 @@ class Class
 {
     bool Function(char* psz, int n, const string& s)
     {
-        // Comment summarising what this section of code does
+        // Comentário que resume o que esta área do código faz
         for (int i = 0; i < n; i++) {
             // When something fails, return early
             if (!Something())
@@ -30,7 +28,7 @@ class Class
             ...
         }
 
-        // Success return is usually at the end
+        // O retorno informando sucesso geralmente está no final
         return true;
     }
 }
@@ -40,39 +38,39 @@ class Class
 Doxygen comments
 -----------------
 
-To facilitate the generation of documentation, use doxygen-compatible comment blocks for functions, methods and fields.
+Para facilitar a geração da documentação, use blocos de comentários compatíveis com doxygen para funções, métodos e campos.
 
-For example, to describe a function use:
+Por exemplo, para descrever uma função use:
 ```c++
 /**
  * ... text ...
- * @param[in] arg1    A description
- * @param[in] arg2    Another argument description
- * @pre Precondition for function...
+ * @param[in] arg1    Uma descrição
+ * @param[in] arg2    Outra descrição do argumento
+ * @pre Pré-requisito para a função...
  */
 bool function(int arg1, const char *arg2)
 ```
-A complete list of `@xxx` commands can be found at http://www.stack.nl/~dimitri/doxygen/manual/commands.html.
-As Doxygen recognizes the comments by the delimiters (`/**` and `*/` in this case), you don't
-*need* to provide any commands for a comment to be valid; just a description text is fine.
+Uma lista completa de comandos `@xxx` podem ser encontradas em http://www.stack.nl/~dimitri/doxygen/manual/commands.html.
+Como Doxygen reconhece os comentários pelos delimitadores (`/**` e `*/` neste caso), você não
+*precisa* informar qualquer comando para um que um comentário seja válido; apenas um texto de descrição é suficiente.
 
-To describe a class use the same construct above the class definition:
+Para descrever uma classe use a mesma construção acima da definição da classe:
 ```c++
 /**
- * Alerts are for notifying old versions if they become too obsolete and
- * need to upgrade. The message is displayed in the status bar.
+ * Alertas são para notificações de versões antigas caso elas se tornem obsoletas
+ * e precisem do upgrade. Esta mensagem é mostrada na barra de status.
  * @see GetWarnings()
  */
 class CAlert
 {
 ```
 
-To describe a member or variable use:
+Para descrever um membro ou uso variável:
 ```c++
-int var; //!< Detailed description after the member
+int var; //!< Descrição detalhada após o membro
 ```
 
-Also OK:
+Também OK:
 ```c++
 ///
 /// ... text ...
@@ -80,261 +78,201 @@ Also OK:
 bool function2(int arg1, const char *arg2)
 ```
 
-Not OK (used plenty in the current source, but not picked up):
+Não OK (usado muito no fonte atual, mas não retirado):
 ```c++
 //
 // ... text ...
 //
 ```
 
-A full list of comment syntaxes picked up by doxygen can be found at http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html,
-but if possible use one of the above styles.
+Uma lista completa de sintaxes de comentários obtidas pelo doxygen pode ser encontrada em http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html, mas se possível, use um dos estilos acima.
 
-Development tips and tricks
+Dicas e truques de desenvolvimento
 ---------------------------
 
-**compiling for debugging**
+**compilando para depuração**
 
-Run configure with the --enable-debug option, then make. Or run configure with
-CXXFLAGS="-g -ggdb -O0" or whatever debug flags you need.
+Execute a configuração com a opção --enable-debug, então make. Ou então execute a configuração com CXXFLAGS="-g -ggdb -O0" ou qualquer outras flags de depuração que você precisa.
 
 **debug.log**
 
-If the code is behaving strangely, take a look in the debug.log file in the data directory;
-error and debugging messages are written there.
+Se o código estiver se comportando de maneira estranha, dê uma olhada no arquivo debug.log no diretório de dados; mensagens de erro e de depuração são escritas neste arquivo.
 
-The -debug=... command-line option controls debugging; running with just -debug or -debug=1 will turn
-on all categories (and give you a very large debug.log file).
+A opção de linha de comando -debug=... controla a depuração; executando apenas -debug ou -debug=1 irá interferir em todas as categorias (e te dará um arquivo debug.log muito grande).
 
-The Qt code routes qDebug() output to debug.log under category "qt": run with -debug=qt
-to see it.
+O código Qt direciona a saída qDebug() para o debug.log sob a categoria "qt": execute com -debug=qt para verificar.
 
-**testnet and regtest modes**
+**Modos testnet e regtest**
 
-Run with the -testnet option to run with "play coins" on the test network, if you
-are testing multi-machine code that needs to operate across the internet.
+Execute com a opção -testnet para executar com "play criptoreais" na rede de teste, se você está testando o código multi-máquina, isto precisa ser feito através da internet.
 
-If you are testing something that can run on one machine, run with the -regtest option.
-In regression test mode, blocks can be created on-demand; see qa/rpc-tests/ for tests
-that run in -regtest mode.
+Se você está testando algo que pode ser executando em uma máquina, execute com a opção -regtest.
+No modo de teste de regressão, os blocos podem ser criados sob demanda; veja qa/rpc-tests/ para testes que executem o modo -regtest.
 
 **DEBUG_LOCKORDER**
 
-Criptoreal Core is a multithreaded application, and deadlocks or other multithreading bugs
-can be very difficult to track down. Compiling with -DDEBUG_LOCKORDER (configure
-CXXFLAGS="-DDEBUG_LOCKORDER -g") inserts run-time checks to keep track of which locks
-are held, and adds warnings to the debug.log file if inconsistencies are detected.
+Criptoreal Core é um aplicativo multiprocessado, os deadlocks ou outros tipos de erros podem ser muito difíceis de serem rastreados. Compiland com o -DDEBUG_LOCKORDER (configurar CXXFLAGS="-DDEBUG_LOCKORDER -g") insere verificações de tempo de execução para acompanhar quais os bloqueios são mantidos, e adiciona avisos no arquivo debug.log caso inconsistências sejam detectadas.
 
-Locking/mutex usage notes
+Notas de uso de Bloqueio/mutex 
 -------------------------
 
-The code is multi-threaded, and uses mutexes and the
-LOCK/TRY_LOCK macros to protect data structures.
+O codigo tem várias linhas, e usa mutexes e as macros LOCK/TRY_LOCK para proteger a estrutura de dados.
 
-Deadlocks due to inconsistent lock ordering (thread 1 locks cs_main
-and then cs_wallet, while thread 2 locks them in the opposite order:
-result, deadlock as each waits for the other to release its lock) are
-a problem. Compile with -DDEBUG_LOCKORDER to get lock order
-inconsistencies reported in the debug.log file.
+Devido ao pedido de bloqueio inconsistente dos deadlocks (o tópico 1 trava cs_main e então cs_wallet, enquanto o tópico 2 trava na ordem contrária: resultado, o impasse como cada um espera com que o outro libere o seu bloqueio) são um problema. Compile com -DDEBUG_LOCKORDER para obter as inconsistências de ordem de bloqueio relatadas no arquivo debug.log.
 
-Re-architecting the core code so there are better-defined interfaces
-between the various components is a goal, with any necessary locking
-done by the components (e.g. see the self-contained CKeyStore class
-and its cs_KeyStore lock for example).
+Re-arquitetar o código do núcleo para que haja interfaces melhor definidas entre os vários componentes é o objetivo, com qualquer bloqueio necessário feito pelos componentes (por exemplo, veja a classe CKeyStore autônoma e seu bloqueio cs_KeyStore).
 
 Threads
 -------
 
-- ThreadScriptCheck : Verifies block scripts.
+- ThreadScriptCheck : Verifica scripts de bloco.
 
-- ThreadImport : Loads blocks from blk*.dat files or bootstrap.dat.
+- ThreadImport : Carrega blocos de arquivos blk*.dat files ou bootstrap.dat.
 
-- StartNode : Starts other threads.
+- StartNode : Inicia outros tópicos.
 
-- ThreadDNSAddressSeed : Loads addresses of peers from the DNS.
+- ThreadDNSAddressSeed : Carrega endereços dos peers do DNS.
 
-- ThreadMapPort : Universal plug-and-play startup/shutdown
+- ThreadMapPort : Inicialização/Desligamento universal plug-and-play 
 
-- ThreadSocketHandler : Sends/Receives data from peers on port 5511.
+- ThreadSocketHandler : Envia/Recebe dados dos peers na porta 5526.
 
-- ThreadOpenAddedConnections : Opens network connections to added nodes.
+- ThreadOpenAddedConnections : Abre conexões de rede para os nós adicionados.
 
-- ThreadOpenConnections : Initiates new connections to peers.
+- ThreadOpenConnections : Inicia novas conexões para os peers.
 
-- ThreadMessageHandler : Higher-level message handling (sending and receiving).
+- ThreadMessageHandler : Manipulação de mensagens de nível superior (envio e recebimento).
 
-- DumpAddresses : Dumps IP addresses of nodes to peers.dat.
+- DumpAddresses : Descarrega endereços IP dos nodes para o arquivo peers.dat.
 
-- ThreadFlushWalletDB : Close the wallet.dat file if it hasn't been used in 500ms.
+- ThreadFlushWalletDB : Fecha o arquivo wallet.dat caso não tenha sido usado em 500ms.
 
-- ThreadRPCServer : Remote procedure call handler, listens on port 5512 for connections and services them.
+- ThreadRPCServer : Controlador de chamadas de procedimento remoto, escuta na porta 5527 para conexões e prestação de serviços.
 
-- BitcoinMiner : Generates coins (if wallet is enabled).
+- BitcoinMiner : Gera criptoreais (caso a carteira esteja habilitada).
 
-- ThreadCheckDarkSendPool : Runs masternode list and sync data update loops
+- ThreadCheckDarkSendPool : Executa lista de masternode e sincronia os loops de atualização de dados
 
-- Shutdown : Does an orderly shutdown of everything.
+- Shutdown : Realiza uma parada ordenada de tudo.
 
-Ignoring IDE/editor files
+Ignorando aquivos IDE/editor 
 --------------------------
 
-In closed-source environments in which everyone uses the same IDE it is common
-to add temporary files it produces to the project-wide `.gitignore` file.
+Em ambientes fechados onde todos usam o mesmo IDE, é comum adicionar os arquivos temporários que ele produz no arquivo `.gitignore` em todo o projeto.
 
-However, in open source software such as Criptoreal Core, where everyone uses
-their own editors/IDE/tools, it is less common. Only you know what files your
-editor produces and this may change from version to version. The canonical way
-to do this is thus to create your local gitignore. Add this to `~/.gitconfig`:
+Entretanto, em software de código aberto como o Criptoreal Core, onde todos usam seus próprios editores/IDE/Ferramentas, isto é menos comum. Somente você sabe quais os arquivos que seu editor produz e isto pode mudar de versão para versão. A forma canônica de fazer isto é criar o seu gitignore local. Adicione isso a `~/.gitconfig`:
 
 ```
 [core]
         excludesfile = /home/.../.gitignore_global
 ```
 
-(alternatively, type the command `git config --global core.excludesfile ~/.gitignore_global`
-on a terminal)
+(em alternativa, digite o comando `git config --global core.excludesfile ~/.gitignore_global`
+no terminal)
 
-Then put your favourite tool's temporary filenames in that file, e.g.
+Então coloque os nomes dos arquivos temporários da sua ferramenta favorita neste arquivo, e.g.
 ```
 # NetBeans
 nbproject/
 ```
 
-Another option is to create a per-repository excludes file `.git/info/exclude`.
-These are not committed but apply only to one repository.
+Outra opção é criar um repositório excluindo o arquivo `.git/info/exclude`. Estes não são comprometidos, mas se aplicam a apenas um repositório.
 
-If a set of tools is used by the build system or scripts the repository (for
-example, lcov) it is perfectly acceptable to add its files to `.gitignore`
-and commit them.
+Se um conjunto de ferramentas é usado pelo sistema de compilação ou de scripts, o repositório (por exemplo, lcov) é aceitável adicionar seus arquivos ao `.gitignore` e comprometê-los.
 
-Development guidelines
+Diretrizes de Desenvolvimento
 ============================
 
-A few non-style-related recommendations for developers, as well as points to
-pay attention to for reviewers of Criptoreal Core code.
+Algumas recomendações não relacionadas ao estilo para desenvolvedores, assim como os pontos para prestar atenção aos revisores do código do Criptoreal Core.
 
 General Criptoreal Core
 ----------------------
 
-- New features should be exposed on RPC first, then can be made available in the GUI
+- Novas funcionalidades devem ser expostas no RPC primeiramente, depois podem ser disponibilizadas na GUI
 
-  - *Rationale*: RPC allows for better automatic testing. The test suite for
-    the GUI is very limited
+  - *Razão*: RPC permite um melhor teste automático. O conjunto de testes para GUI é muito limitado.
 
-- Make sure pull requests pass Travis CI before merging
+- Certifique-se que de todos os pedidos de pool passem por Travis CI antes da fusão
 
-  - *Rationale*: Makes sure that they pass thorough testing, and that the tester will keep passing
-     on the master branch. Otherwise all new pull requests will start failing the tests, resulting in
-     confusion and mayhem
- 
-  - *Explanation*: If the test suite is to be updated for a change, this has to
-    be done first 
+  - *Razão*: Certifique-se de que eles passem em testes completos, e que o testador continue passando no ramo mestre. Caso contrário, todos os novos pedidos de pull começarão a falhar nos testes, resultando em confusão e caos.
+  - *Explanation*: Se o conjunto de testes foi atualizado para uma mudança, isto deve ser feito primeiro.
 
-Wallet
+Carteira
 -------
 
-- Make sure that no crashes happen with run-time option `-disablewallet`.
+- Certifique-se de que nenhuma falha ocorra com a opção run-time `-disablewallet`.
 
-  - *Rationale*: In RPC code that conditionally uses the wallet (such as
-    `validateaddress`) it is easy to forget that global pointer `pwalletMain`
-    can be NULL. See `qa/rpc-tests/disablewallet.py` for functional tests
-    exercising the API with `-disablewallet`
+  - *Razão*: No código RPC que condicionalmente usa a carteira (como o `validateaddress`) é fácil esquecer que o ponteiro global `pwalletMain` pode ser NULL. Veja `qa/rpc-tests/disablewallet.py` para testes funcionais que exercem a API com`-disablewallet`
 
-- Include `db_cxx.h` (BerkeleyDB header) only when `ENABLE_WALLET` is set
+- Inclui `db_cxx.h` (cabeçalho BerkeleyDB) somente quando `ENABLE_WALLET` está ativo
 
-  - *Rationale*: Otherwise compilation of the disable-wallet build will fail in environments without BerkeleyDB
+  - *Razão*: Caso contrário a compilação disable-wallet irá falhar em ambientes sem BerkeleyDB
 
-General C++
+C++
 -------------
 
-- Assertions should not have side-effects
+- Asserções não devem ter efeitos colaterais
 
-  - *Rationale*: Even though the source code is set to to refuse to compile
-    with assertions disabled, having side-effects in assertions is unexpected and
-    makes the code harder to understand
+  - *Razão*: Embora o código fonte seja configurado para se recusar a compilar com asserções disabilitadas, ter efeitos colaterais nas asserções é inesperado e torna o código ainda mais difícil de ser entendido
 
-- If you use the `.h`, you must link the `.cpp`
+- Se você usar o `.h`, você deve veicular o `.cpp`
 
-  - *Rationale*: Include files define the interface for the code in implementation files. Including one but
-      not linking the other is confusing. Please avoid that. Moving functions from
-      the `.h` to the `.cpp` should not result in build errors
+  - *Razão*: Incluir arquivos definem a interface para o código nos arquivos de implementação. Incluir um mas não ligar o outro é confuso. Por favor evite isto. Mover funções do `.h` para `.cpp` não deve resultar em erros de compilação.
 
-- Use the RAII (Resource Acquisition Is Initialization) paradigm where possible. For example by using
-  `scoped_pointer` for allocations in a function.
+- Use o paradigma RAII (Aquisição de Recursos na inicialização) quando possível. Por exemplo, usando `unique_ptr` para alocações em uma função.
 
-  - *Rationale*: This avoids memory and resource leaks, and ensures exception safety
+  - *Razão*: Isto evita a perda de memória e recursos, e garante segurança da exceção
 
-C++ data structures
+Estrutura de dados C++ 
 --------------------
 
-- Never use the `std::map []` syntax when reading from a map, but instead use `.find()`
+- Nunca use a sintaxe `std::map []` ao ler a partir de um mapa, ao invés use o `.find()`
 
-  - *Rationale*: `[]` does an insert (of the default element) if the item doesn't
-    exist in the map yet. This has resulted in memory leaks in the past, as well as
-    race conditions (expecting read-read behavior). Using `[]` is fine for *writing* to a map
+  - *Razão*: `[]` faz uma inserção (do elemento padrão) se o item ainda não existe em um mapa. Isto resultou em perda de memória no passado, assim como as condições (esperando um comportamento de leitura). Usar `[]` é bom para  *escrever* para um mapa
 
-- Do not compare an iterator from one data structure with an iterator of
-  another data structure (even if of the same type)
+- Não compare um interador de uma estrutura de dados com um interador de outra estrutura de dados (mesmo que sejam do mesmo tipo)
 
-  - *Rationale*: Behavior is undefined. In C++ parlor this means "may reformat
-    the universe", in practice this has resulted in at least one hard-to-debug crash bug
+  - *Razão*: O comportamento é indefinido. Em C++ isto significa "pode reformatar o universo", na prática isto resultou em pelo menos um erro difícil de depurar
 
-- Watch out for vector out-of-bounds exceptions. `&vch[0]` is illegal for an
-  empty vector, `&vch[vch.size()]` is always illegal. Use `begin_ptr(vch)` and
-  `end_ptr(vch)` to get the begin and end pointer instead (defined in
-  `serialize.h`)
+- Cuidado com excesso de acesso vetorial fora dos limites. `&vch[vch.size()]` é ilegal, incluindo `&vch[0]` para um vetor vazio. Use `vch.data()` e `vch.data() + vch.size()` em vez disso.
 
-- Vector bounds checking is only enabled in debug mode. Do not rely on it
+- A verificação dos limites de vetores só é ativada no modo de depuração. Não confie nisso
 
-- Make sure that constructors initialize all fields. If this is skipped for a
-  good reason (i.e., optimization on the critical path), add an explicit
-  comment about this
+- Verifique se os construtores inicializam todos os campos. Se isto é ignorado por uma boa razão (i.e., otimização no caominho crítico), adicione um comentário explícito sobre isto
 
-  - *Rationale*: Ensure determinism by avoiding accidental use of uninitialized
-    values. Also, static analyzers balk about this.
+  - *Razão*: Assegurar o determinismo evitando o uso acidental de valores não inicializados. Além disso, os analisadores estáticos se recusam a isso.
 
-- Use explicitly signed or unsigned `char`s, or even better `uint8_t` and
-  `int8_t`. Do not use bare `char` unless it is to pass to a third-party API.
-  This type can be signed or unsigned depending on the architecture, which can
-  lead to interoperability problems or dangerous conditions such as
-  out-of-bounds array accesses
+- Use `char`s, ou ainda `uint8_t` e  `int8_t` específicos assinados ou não. Não use `char` ao menos que seja para passar para um API de terceiros. Este tipo pode ser assinado ou não dependendo da arquitetura, que pode levar a problemas de interoperabilidade ou condições perigosas, como acessos de matriz fora dos limites
 
-- Prefer explicit constructions over implicit ones that rely on 'magical' C++ behavior
+- Prefira construções explícitas ao invés de implícitas que dependem do comportamento 'mágico' do C++
 
-  - *Rationale*: Easier to understand what is happening, thus easier to spot mistakes, even for those
-  that are not language lawyers
+  - *Razão*: Mais fácil de entender o que está acontecendo, mais fácil detectar erros, até para aqueles que tem um pouco mais de dificuldade
 
-Strings and formatting
+Strings e formatação
 ------------------------
 
-- Be careful of `LogPrint` versus `LogPrintf`. `LogPrint` takes a `category` argument, `LogPrintf` does not.
+- Cuidado com `LogPrint` versus `LogPrintf`. `LogPrint` toma um argumento `category`, `LogPrintf` não.
 
-  - *Rationale*: Confusion of these can result in runtime exceptions due to
-    formatting mismatch, and it is easy to get wrong because of subtly similar naming
+  - *Razão*: A confusão destes pode resultar em exceções de runtime devido à incompatibilidade de formatação, e é mais fácil de errar por causa de nomes sutilmente semelhantes
 
-- Use `std::string`, avoid C string manipulation functions
+- Use `std::string`, evitando as funções de manipulação de sequência C
 
-  - *Rationale*: C++ string handling is marginally safer, less scope for
-    buffer overflows and surprises with `\0` characters. Also some C string manipulations
-    tend to act differently depending on platform, or even the user locale
+  - *Razão*: A sequência de caracteres C++ geralmente é pouco segura, menor alcance para buffer overflows e surpresas com caracteres `\0` . Além disso, algumas manipulações de sequência C tendem a atuar de forma diferente dependendo da plataforma ou até da localização do usuário
 
-- Use `ParseInt32`, `ParseInt64`, `ParseDouble` from `utilstrencodings.h` for number parsing
+- Use `ParseInt32`, `ParseInt64`, `ParseUInt32`, `ParseUInt64`, `ParseDouble` do `utilstrencodings.h` para análise de número
 
-  - *Rationale*: These functions do overflow checking, and avoid pesky locale issues
+  - *Razão*: Estas funções fazem a verificação do overflow, e evitam problemas locais que incomodam
 
-- For `strprintf`, `LogPrint`, `LogPrintf` formatting characters don't need size specifiers
+- Para `strprintf`, `LogPrint`, `LogPrintf` a formatação de caracteres não precisa de tamanho específico
 
-  - *Rationale*: Criptoreal Core uses tinyformat, which is type safe. Leave them out to avoid confusion
+  - *Razão*: Criptoreal Core usa tinyformat, Que é um tipo seguro. Deixe-as de fora para evitar confusão
 
 Threads and synchronization
 ----------------------------
 
-- Build and run tests with `-DDEBUG_LOCKORDER` to verify that no potential
-  deadlocks are introduced.
+- - Compile e execute testes com `-DDEBUG_LOCKORDER` para verificar que nenhum deadlock foi introduzido.
 
-- When using `LOCK`/`TRY_LOCK` be aware that the lock exists in the context of
-  the current scope, so surround the statement and the code that needs the lock
-  with braces
+- Ao usar `LOCK`/`TRY_LOCK` esteja ciente de que o bloqueio existe no contexto do escopo atual, então execute a instrução e o código que precisa do bloqueio com chaves
 
   OK:
 
@@ -345,7 +283,7 @@ Threads and synchronization
 }
 ```
 
-  Wrong:
+  Errado:
 
 ```c++
 TRY_LOCK(cs_vNodes, lockNodes);
@@ -357,21 +295,17 @@ TRY_LOCK(cs_vNodes, lockNodes);
 Source code organization
 --------------------------
 
-- Implementation code should go into the `.cpp` file and not the `.h`, unless necessary due to template usage or
-  when performance due to inlining is critical
+- O código de implementação deve entrar no arquivo `.cpp` e não no `.h`, a menos que seja necessário devido ao uso de um modelo ou quando o desempenho devido ao lançamento for crítico
 
-  - *Rationale*: Shorter and simpler header files are easier to read, and reduce compile time
+  - *Razão*: Arquivos de cabeçalho menores e mais simples são mais fáceis de ler e reduzem o tempo de compilação
 
-- Don't import anything into the global namespace (`using namespace ...`). Use
-  fully specified types such as `std::string`.
+- Não importe nada no namespace global (`using namespace ...`). Use tipos totalmente especificados, como `std::string`.
 
-  - *Rationale*: Avoids symbol conflicts
+  - *Razão*: Evita conflitos de símbolos
 
 GUI
 -----
 
-- Do not display or manipulate dialogs in model code (classes `*Model`)
+- Não exiba ou manipule diálogos no modelo de código (classes `*Model`)
 
-  - *Rationale*: Model classes pass through events and data from the core, they
-    should not interact with the user. That's where View classes come in. The converse also
-    holds: try to not directly access core data structures from Views.
+  - *Razão*: As classes de modelo passam por eventos e dados do núcleo, elas não devem interagir como usuário. Assim que entram as classes View. O inverso também acontece: tente não acessar diretamente as estruturas de dados das Views.
