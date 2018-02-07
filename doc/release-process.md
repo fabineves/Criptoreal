@@ -1,13 +1,13 @@
-Release Process
-====================
+Processo de lançamento
+======================
 
-* Update translations, see [translation_process.md](https://github.com/criptoreal/criptoreal/blob/master/doc/translation_process.md#syncing-with-transifex)
-* Update hardcoded [seeds](/contrib/seeds)
+* Atualize traduções, veja [translation_process.md](https://github.com/criptoreal/criptoreal/blob/master/doc/translation_process.md#syncing-with-transifex)
+* Atualize hardcoded [seeds](/contrib/seeds)
 
 * * *
 
-### First time / New builders
-Check out the source code in the following directory hierarchy.
+### Primeira vez / Novos compiladores
+Verifique o código fonte na seguinte hierarquia de diretórios.
 
 	cd /path/to/your/toplevel/build
 	git clone https://github.com/criptoreal/gitian.sigs.git
@@ -15,7 +15,7 @@ Check out the source code in the following directory hierarchy.
 	git clone https://github.com/devrandom/gitian-builder.git
 	git clone https://github.com/criptoreal/criptoreal.git
 
-### Criptoreal Core maintainers/release engineers, update (commit) version in sources
+###  Mantenedores/engenheiros de lançamento do Criptoreal, atualizem a versão nos fontes
 
 	pushd ./criptoreal
 	contrib/verifysfbinaries/verify.sh
@@ -36,9 +36,9 @@ Check out the source code in the following directory hierarchy.
 
 * * *
 
-### Setup and perform Gitian builds
+### Configurar e executar compilações do Gitian
 
- Setup Gitian descriptors:
+ Configurar descriptores Gitian:
 
 	pushd ./criptoreal
 	export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
@@ -47,46 +47,46 @@ Check out the source code in the following directory hierarchy.
 	git checkout v${VERSION}
 	popd
 
-  Ensure your gitian.sigs are up-to-date if you wish to gverify your builds against other Gitian signatures.
+  Certifique-se de que seus gitian.sigs estejam atualizados se você deseja verificar suas compilações contra outras assinaturas Gitian.
 
 	pushd ./gitian.sigs
 	git pull
 	popd
 
-  Ensure gitian-builder is up-to-date to take advantage of new caching features (`e9741525c` or later is recommended).
+  Certifique-se de que o gitian-builder esteja atualizado para aproveitar os novos recursos de cache (`e9741525c` ou mais recente é recomendado).
 
 	pushd ./gitian-builder
 	git pull
 
-### Fetch and create inputs: (first time, or when dependency versions change)
+### Obtenha e crie entradas: (primeira vez ou quando as versões de dependência mudam)
 
 	mkdir -p inputs
 	wget -P inputs https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
 	wget -P inputs http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
 
- Register and download the Apple SDK: see [OS X readme](README_osx.txt) for details.
+ Registre e faça o download do Apple SDK: veja [OS X readme](README_osx.txt) para detalhes.
 
  https://developer.apple.com/devcenter/download.action?path=/Developer_Tools/xcode_6.1.1/xcode_6.1.1.dmg
 
- Using a Mac, create a tarball for the 10.9 SDK and copy it to the inputs directory:
+ Usando um Mac, crie um tarball para o sDK 10.9 e copie para o diretório de entradas:
 
 	tar -C /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/ -czf MacOSX10.9.sdk.tar.gz MacOSX10.9.sdk
 
-### Optional: Seed the Gitian sources cache and offline git repositories
+### Opcional: Sinalize o cache das fontes Gitian e os repositórios git offline
 
-By default, Gitian will fetch source files as needed. To cache them ahead of time:
+Por padrão, o Gitian irá buscar arquivos de origem conforme necessário. Para armazená-los antes do tempo:
 
 	make -C ../criptoreal/depends download SOURCES_PATH=`pwd`/cache/common
 
-Only missing files will be fetched, so this is safe to re-run for each build.
+Somente os arquivos ausentes serão obtidos, então isto é seguro para re-executar para cada compilação.
 
-NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
+NOTA: Compilações offline devem usar o sinalizador --url para garantir que o Gitian seja recuperado apenas de URLs locais. Por exemplo:
 ```
 ./bin/gbuild --url criptoreal=/path/to/criptoreal,signature=/path/to/sigs {rest of arguments}
 ```
-The gbuild invocations below <b>DO NOT DO THIS</b> by default.
+As invocações gbuild abaixo <b>NÃO FAZEM ISTO</b> por padrão.
 
-### Build and sign Criptoreal Core for Linux, Windows, and OS X:
+### Compilar e assinar o Criptoreal Core para Linux, Windows, e OS X:
 
 	./bin/gbuild --commit criptoreal=v${VERSION} ../criptoreal/contrib/gitian-descriptors/gitian-linux.yml
 	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../criptoreal/contrib/gitian-descriptors/gitian-linux.yml
@@ -103,21 +103,21 @@ The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 	mv build/out/criptoreal-*.tar.gz build/out/criptoreal-*.dmg ../
 	popd
 
-  Build output expected:
+ Compilação de saída esperada:
 
-  1. source tarball (criptoreal-${VERSION}.tar.gz)
-  2. linux 32-bit and 64-bit dist tarballs (criptoreal-${VERSION}-linux[32|64].tar.gz)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (criptoreal-${VERSION}-win[32|64]-setup-unsigned.exe, criptoreal-${VERSION}-win[32|64].zip)
-  4. OS X unsigned installer and dist tarball (criptoreal-${VERSION}-osx-unsigned.dmg, criptoreal-${VERSION}-osx64.tar.gz)
-  5. Gitian signatures (in gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/
+  1. fonte tarball (`criptoreal-${VERSION}.tar.gz`)
+  2. linux 32-bit e 64-bit dist tarballs (`criptoreal-${VERSION}-linux[32|64].tar.gz`)
+  3. windows 32-bit e 64-bit instaladores não assinados e dist zips (`criptoreal-${VERSION}-win[32|64]-setup-unsigned.exe`, `criptoreal-${VERSION}-win[32|64].zip`)
+  4. Instalador não assinado do OS X e dist tarball (`criptoreal-${VERSION}-osx-unsigned.dmg`, `criptoreal-${VERSION}-osx64.tar.gz`)
+  5. Assinaturas Gitian (em `gitian.sigs.cripto/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/`)
 
-### Verify other gitian builders signatures to your own. (Optional)
+### Verifique outras assinaturas dos compiladores gitian para o seu próprio. (Opcional)
 
-  Add other gitian builders keys to your gpg keyring
+  Adicione outras chaves de compiladores gitian ao seu chaveiro gpg keyring
 
 	gpg --import ../criptoreal/contrib/gitian-downloader/*.pgp
 
-  Verify the signatures
+  Verifique as assinaturas
 
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../criptoreal/contrib/gitian-descriptors/gitian-linux.yml
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../criptoreal/contrib/gitian-descriptors/gitian-win.yml
@@ -125,9 +125,9 @@ The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
 	popd
 
-### Next steps:
+### Próximos passos:
 
-Commit your signature to gitian.sigs:
+Confirme sua assinatura ao gitian.sigs:
 
 	pushd gitian.sigs
 	git add ${VERSION}-linux/${SIGNER}
@@ -137,11 +137,12 @@ Commit your signature to gitian.sigs:
 	git push  # Assuming you can push to the gitian.sigs tree
 	popd
 
-  Wait for Windows/OS X detached signatures:
-	Once the Windows/OS X builds each have 3 matching signatures, they will be signed with their respective release keys.
-	Detached signatures will then be committed to the [criptoreal-detached-sigs](https://github.com/criptoreal/criptoreal-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+  Aguarde assinaturas independentes do Windows/OS X:
 
-  Create (and optionally verify) the signed OS X binary:
+- Uma vez que o Windows/OS X compila, cada um tem 3 assinaturas correspondentes, eles serão assinados com as respectivas chaves de lançamento.
+- As assinaturas separadas serão comprometidas com o repositório [criptoreal-detached-sigs](https://github.com/criptoreal/criptoreal-detached-sigs), que pode ser combinado com os aplicativos não assinados para criar binários assinados.
+
+Criar (e verificar opcionalmente) o binário OS X assinado:
 
 	pushd ./gitian-builder
 	./bin/gbuild -i --commit signature=v${VERSION} ../criptoreal/contrib/gitian-descriptors/gitian-osx-signer.yml
@@ -150,7 +151,7 @@ Commit your signature to gitian.sigs:
 	mv build/out/criptoreal-osx-signed.dmg ../criptoreal-${VERSION}-osx.dmg
 	popd
 
-  Create (and optionally verify) the signed Windows binaries:
+  Criar (e verificar opcionalmente) os binários do Windows assinados:
 
 	pushd ./gitian-builder
 	./bin/gbuild -i --commit signature=v${VERSION} ../criptoreal/contrib/gitian-descriptors/gitian-win-signer.yml
@@ -160,7 +161,7 @@ Commit your signature to gitian.sigs:
 	mv build/out/criptoreal-*win32-setup.exe ../criptoreal-${VERSION}-win32-setup.exe
 	popd
 
-Commit your signature for the signed OS X/Windows binaries:
+Confirme sua assinatura para os binários OS X / Windows assinados:
 
 	pushd gitian.sigs
 	git add ${VERSION}-osx-signed/${SIGNER}
@@ -171,7 +172,7 @@ Commit your signature for the signed OS X/Windows binaries:
 
 -------------------------------------------------------------------------
 
-### After 3 or more people have gitian-built and their results match:
+### Depois que 3 ou mais pessoas tiverem compilado o gitian e seus resultados coincidem:
 
 - Create `SHA256SUMS.asc` for the builds, and GPG-sign it:
 ```bash
@@ -179,25 +180,25 @@ sha256sum * > SHA256SUMS
 gpg --digest-algo sha256 --clearsign SHA256SUMS # outputs SHA256SUMS.asc
 rm SHA256SUMS
 ```
-(the digest algorithm is forced to sha256 to avoid confusion of the `Hash:` header that GPG adds with the SHA256 used for the files)
-Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
+(o algoritmo digest é forçado a sha256 para evitar confusão do cabeçalho `Hash:` que o GPG adiciona com o SHA256 usado para os arquivos)
+Nota: verifique que SHA256SUMS por si só não termina em SHA256SUMS, que é uma entrada falsa/absurda.
 
-- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the criptoreal.org server
+- Faça o upload dos zips e installers, assim como  o arquivo`SHA256SUMS.asc` do último passo, para o servidor criptoreal.org
 
-- Update criptoreal.org
+- Atualize criptoreal.org
 
-- Announce the release:
+- Anuncie o lançamento:
 
-  - Release on Criptoreal forum: https://www.criptoreal.org/forum/topic/official-announcements.54/
+  - Informe no fórum Criptoreal: https://www.criptoreal.org/forum/topic/official-announcements.54/
 
-  - Criptoreal-development mailing list
+  - Lista de email de desenvolvedores Criptoreal
 
-  - Update title of #criptoreal on Freenode IRC
+  - Atualize o título no canal #criptoreal no Freenode IRC
 
-  - Optionally reddit /r/Criptorealpay, ... but this will usually sort out itself
+  - Opcionalmente no reddit /r/Criptorealpay, ... mas isto se resolve sozinho
 
-- Notify flare so that he can start building [the PPAs](https://launchpad.net/~criptoreal.org/+archive/ubuntu/criptoreal)
+- Notifique flare para que comece a compilar o [PPAs](https://launchpad.net/~criptoreal.org/+archive/ubuntu/criptoreal)
 
-- Add release notes for the new version to the directory `doc/release-notes` in git master
+- Adicione as notas de lançamento sobre a nova versão no diretório `doc/release-notes` no git master
 
-- Celebrate
+- Comemore
