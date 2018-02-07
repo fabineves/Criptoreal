@@ -1,120 +1,121 @@
-# start-many Setup Guide
+# Guia de configuração start-many
 
-## Setting up your Wallet
+## Configurando sua carteira
 
-### Create New Wallet Addresses
+### Criar um novo endereço de carteira
 
-1. Open the QT Wallet.
-2. Click the Receive tab.
-3. Fill in the form to request a payment.
-    * Label: mn01
-    * Amount: 1000 (optional)
-    * Click *Request payment* button
-5. Click the *Copy Address* button
+1. Abra a carteira QT.
+2. Clique na aba Receber (Receive).
+3. Preencha o formulário para requerer um pagamento.
+    * Etiqueta: mn01
+    * Valor: 1000 (optional)
+    * Clique no botão  *Requerer Pagamento* 
+5. Clique no botão *Copiar endereço* 
 
-Create a new wallet address for each Masternode.
+Crie um novo endereço de carteira para cada Masternode.
 
-Close your QT Wallet.
+Feche sua carteira QT.
 
-### Send 1000 CRS to New Addresses
+### Eviar 1000 CRS para novos endereços
 
-Send exactly 1000 CRS to each new address created above.
+Envia exatamente 1000 CRS para cada endereço criado acima.
 
-### Create New Masternode Private Keys
+### Criar novas chaves privadas de Masternode 
 
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
+Abra sua carteira QT e depois vá para console (no menu selecione `Tools` => `Debug Console`)
 
-Issue the following:
+Emita o seguinte:
 
 ```masternode genkey```
 
-*Note: A masternode private key will need to be created for each Masternode you run. You should not use the same masternode private key for multiple Masternodes.*
+*Note: Uma chave privada masternode precisará ser criada para cada Masternode que você executar. Você não deve usar a mesma chave privada masternode para vários Masternodes.*
 
-Close your QT Wallet.
+Feche sua carteira QT .
 
-## <a name="masternodeconf"></a>Create masternode.conf file
+## <a name="masternodeconf"></a>Criar arquivo masternode.conf 
 
-Remember... this is local. Make sure your QT is not running.
+Lembre-se... isto é local. Verifique se o seu QT não está sendo executado.
 
-Create the `masternode.conf` file in the same directory as your `wallet.dat`.
+Crie o arquivo `masternode.conf` no mesmo diretório da sua `wallet.dat`.
 
-Copy the masternode private key and correspondig collateral output transaction that holds the 1000 CRS.
+Copie a chave privada masternode private key e corresponda uma transação de saída colateral que contenha 1000 CRS.
 
-*Note: The masternode priviate key is **not** the same as a wallet private key. **Never** put your wallet private key in the masternode.conf file. That is almost equivalent to putting your 1000 CRS on the remote server and defeats the purpose of a hot/cold setup.*
+*Nota: A chave privada masternode **não** igual a chave privada da carteira. **Nunca** coloque a chave privada da sua carteira no arquivo masternode.conf. Isto é quase equivalente a colocar seus 1000 CRS no servidor remoto e derrota o propósito de uma configuração quente/fria.*
 
-### Get the collateral output
+### Obter a saída colateral
 
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
+Abra a sua carteira QT Wallet e vá até console (no menu selecione `Tools` => `Debug Console`)
 
-Issue the following:
+Emita o seguinte:
 
 ```masternode outputs```
 
-Make note of the hash (which is your collateral_output) and index.
+Anote o hash (que é o seu collateral_output) e o index.
 
-### Enter your Masternode details into your masternode.conf file
-[From the criptoreal github repo](https://github.com/criptoreal/criptoreal/blob/master/doc/masternode_conf.md)
+### Informe seus detalhes Masternode no arquivo masternode.conf 
+[No repositório do criptoreal no github](https://github.com/criptoreal/criptoreal/blob/master/doc/masternode_conf.md)
 
-`masternode.conf` format is a space seperated text file. Each line consisting of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
+`masternode.conf` é um arquivo de texto separado em espaços. Cada linha consiste em um alias, endereço IP seguido por porta, chave privada masternode, id de transação de saída colateral e índice de saída colateral.
 
 ```
 alias ipaddress:port masternode_private_key collateral_output collateral_output_index
 ```
 
-Example:
+Examplo:
 
 ```
 mn01 127.0.0.1:5511 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0
 mn02 127.0.0.2:5511 93WaAb3htPJEV8E9aQcN23Jt97bPex7YvWfgMDTUdWJvzmrMqey aa9f1034d973377a5e733272c3d0eced1de22555ad45d6b24abadff8087948d4 0
 ```
 
-## Update criptoreal.conf on server
+## Atualizar criptoreal.conf no servidor
 
-If you generated a new masternode private key, you will need to update the remote `criptoreal.conf` files.
+Se você gerou uma nova chave privada masternode, você precisará atualizar os arquivos remotos `criptoreal.conf`.
 
-Shut down the daemon and then edit the file.
+Desligue o daemon e depois edite o arquivo.
 
 ```nano .criptoreal/criptoreal.conf```
 
-### Edit the masternodeprivkey
-If you generated a new masternode private key, you will need to update the `masternodeprivkey` value in your remote `criptoreal.conf` file.
+### Editar o masternodeprivkey
 
-## Start your Masternodes
+Se você gerou uma nova chave privada masternode, você precisará atualizar o valor `masternodeprivkey` no seu arquivo remoto `criptoreal.conf`.
 
-### Remote
+## Iniciar seus Masternodes
 
-If your remote server is not running, start your remote daemon as you normally would. 
+### Remoto
 
-You can confirm that remote server is on the correct block by issuing
+Se o seu servidor remoto não estiver sendo executado, incie seu daemon remoto como faria normalmente. 
+
+Você pode confirmar que o servidor remoto está no bloco correto emitindo
 
 ```criptoreal-cli getinfo```
 
-and comparing with the official explorer at https://explorer.criptoreal.org/chain/Criptoreal
+e comparando com o explorador oficial em https://explorer.criptoreal.org/chain/Criptoreal
 
 ### Local
 
-Finally... time to start from local.
+Finalmente... hora de começar do local.
 
-#### Open up your QT Wallet
+#### Abra sua carteira QT 
 
-From the menu select `Tools` => `Debug Console`
+No menu selecione `Tools` => `Debug Console`
 
-If you want to review your `masternode.conf` setting before starting Masternodes, issue the following in the Debug Console:
+Se você deseja rever sua configuração do arquivo `masternode.conf` antes de iniciar os Masternodes, informe o seguinte no Debug Console:
 
 ```masternode list-conf```
 
-Give it the eye-ball test. If satisfied, you can start your Masternodes one of two ways.
+Faça o teste eye-ball. Se estiver satisfeito, você pode começar seus Masternodes de duas maneiras.
 
 1. `masternode start-alias [alias_from_masternode.conf]`  
-Example ```masternode start-alias mn01```
+Examplo ```masternode start-alias mn01```
 2. `masternode start-many`
 
-## Verify that Masternodes actually started
+## Verificar se os Masternodes realmente iniciaram
 
-### Remote
+### Remoto
 
-Issue command `masternode status`
-It should return you something like that:
+Emitir comando `masternode status`
+Deve retornar para você algo parecido com isto:
 ```
 criptoreal-cli masternode status
 {
@@ -124,10 +125,10 @@ criptoreal-cli masternode status
     "status" : "Masternode successfully started"
 }
 ```
-Command output should have "_Masternode successfully started_" in its `status` field now. If it says "_not capable_" instead, you should check your config again.
+O resultado do comando deve ter  "_Masternode successfully started_" no campo `status` agora. Se ao invés disso mostra "_not capable_", você deve verifiar suas configurações novamente.
 
 ### Local
 
-Search your Masternodes on https://criptorealninja.pl/masternodes.html
+Busque seus Masternodes em https://criptorealninja.pl/masternodes.html
 
-_Hint: Bookmark it, you definitely will be using this site a lot._
+_Dica: Salve nos favoritos, você definitivamente vai usar muito este site._
