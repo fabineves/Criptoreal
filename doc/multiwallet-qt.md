@@ -1,48 +1,34 @@
-Multiwallet Qt Development and Integration Strategy
+Estratégia de desenvolvimento e integração Qt Multiwallet 
 ===================================================
 
-In order to support loading of multiple wallets in bitcoin-qt, a few changes in the UI architecture will be needed.
-Fortunately, only four of the files in the existing project are affected by this change.
+Para suportar o carregamento de múltiplas carteiras em bitcoin-qt, serão necessárias algumas mudanças na arquitetura UI.
+Felizmente, apenas quatro dos arquivos do projeto existente são afetados por esta mudança.
 
-Two new classes have been implemented in two new .h/.cpp file pairs, with much of the functionality that was previously
-implemented in the BitcoinGUI class moved over to these new classes.
+Duas novas classes foram implantadas em dois novos pares de arquivos .h/.cpp, com grande parte da funcionalidade que era implementada anteriormente na classe BitcoinGUI sendo movida para novas classes.
 
-The two existing files most affected, by far, are bitcoingui.h and bitcoingui.cpp, as the BitcoinGUI class will require
-some major retrofitting.
+Os dois arquivos existentes mais afetados, de longe, são bitcoingui.h e bitcoingui.cpp, assim como a classe BitcoinGUI exigirá algumas adaptações importantes.
 
-Only requiring some minor changes is criptoreal.cpp.
+O único que exige algumas pequenas alterações é o criptoreal.cpp.
 
-Finally, two new headers and source files will have to be added to bitcoin-qt.pro.
+Finalmente, dois novos cabeçalhos e arquivos fonte terão que ser adicionados ao bitcoin-qt.pro.
 
-Changes to class BitcoinGUI
+Mudanças na classe BitcoinGUI
 ---------------------------
-The principal change to the BitcoinGUI class concerns the QStackedWidget instance called centralWidget.
-This widget owns five page views: overviewPage, transactionsPage, addressBookPage, receiveCoinsPage, and sendCoinsPage.
+A principal mudança na classe BitcoinGUI diz respeito à instância QStackedWidget chamada centralWidget. Este widget possui cinco páginas: overviewPage, transactionsPage, addressBookPage, receiveCoinsPage, e sendCoinsPage.
 
-A new class called *WalletView* inheriting from QStackedWidget has been written to handle all renderings and updates of
-these page views. In addition to owning these five page views, a WalletView also has a pointer to a WalletModel instance.
-This allows the construction of multiple WalletView objects, each rendering a distinct wallet.
+Uma nova classe chamada *WalletView* herdada de QStackedWidget foi escrita para lidar com todas as renderizações e atualizações destas visualizações de página. Além de possuir estas cinco visualizações de página, WalletView também possui um ponteiro para a instância de a WalletModel. Isto permite a construção de múltiplos objetos WalletView, cada um renderizando um carteira distinta.
 
-A second class called *WalletFrame* inheriting from QFrame has been written as a container for embedding all wallet-related
-controls into BitcoinGUI. At present it contains the WalletView instances for the wallets and does little more than passing on messages
-from BitcoinGUI to the currently selected WalletView. It is a WalletFrame instance
-that takes the place of what used to be centralWidget in BitcoinGUI. The purpose of this class is to allow future
-refinements of the wallet controls with minimal need for further modifications to BitcoinGUI, thus greatly simplifying
-merges while reducing the risk of breaking top-level stuff.
+Uma segunda classe chamada *WalletFrame* herdada de QFrame foi escrita como um recipiente para incorporar todos os controles relacionados a carteira no BitcoinGUI. Atualmente, contém as instâncias do WalletView para as carteiras e faz pouco mais do que transmitir mensagens do BitcoinGUI para o WalletView selecionado atualmente. É uma instância WalletFrame que toma o lugar do que costumava ser centralWidget no BitcoinGUI. O objetivo desta classe é permitir aprimoramentos futuros dos controles da carteira com uma mínima necessidade de modificações no BitcoinGUI, simplificando assim as fusões, reduzindo o risco de quebras em coisas de alto nível.
 
-Changes to criptoreal.cpp
+Mudanças no criptoreal.cpp
 ----------------------
-criptoreal.cpp is the entry point into bitcoin-qt, and as such, will require some minor modifications to provide hooks for
-multiple wallet support. Most importantly will be the way it instantiates WalletModels and passes them to the
-singleton BitcoinGUI instance called window. Formerly, BitcoinGUI kept a pointer to a single instance of a WalletModel.
-The initial change required is very simple: rather than calling `window.setWalletModel(&walletModel);` we perform the
-following two steps:
+criptoreal.cpp is é o ponto de entrada em para bitcoin-qt e como tal, irá exigir algumas modificações menores para fornecer ganchos para suporte de carteira múltipla. O mais importante será a forma como a instância WalletModels os passa para BitcoinGUI . Anteriormente, o BitcoinGUI manteve um ponteiro para uma única instância de um WalletModel.
+A mudança inicial necessária é muito simples: ao invés de chamar `window.setWalletModel(&walletModel);` realizamos o seguinte em dois passos:
 
 	window.addWallet("~Default", &walletModel);
 	window.setCurrentWallet("~Default");
 
-The string parameter is just an arbitrary name given to the default wallet. It's been prepended with a tilde to avoid name collisions in the future with additional wallets.
+O parâmetro da string é apenas um nome arbitrário dado para a carteira padrão. Foi feito um tilde para evitar colisões de nome no futuro com carteiras adicionais.
 
-The shutdown call `window.setWalletModel(0)` has also been removed. In its place is now:
-
+A chamada para desligamento `window.setWalletModel(0)` também foi removida. No seu lugar agora usamos: 
 window.removeAllWallets();
