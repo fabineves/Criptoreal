@@ -1,145 +1,122 @@
-Criptoreal Core version 0.12.2.3
+Criptoreal Core version 1.0.0.0
 ==========================
 
-Release is now available from:
+A versão está disponível em:
 
   <https://www.criptoreal.org/downloads/#wallets>
 
-This is a new minor version release, bringing various bugfixes and other
-improvements.
+Esta é uma versão com pequenas alterações, corrgindo vários bugs e trazendo algumas melhorias.
 
-Please report bugs using the issue tracker at github:
+Por favor reporte os bugs usando o rastreador de problemas no github:
 
   <https://github.com/criptoreal/criptoreal/issues>
 
 
-Upgrading and downgrading
+Upgrade e Downgrade
 =========================
 
-How to Upgrade
+Como fazer o upgrade
 --------------
 
-If you are running an older version, shut it down. Wait until it has completely
-shut down (which might take a few minutes for older versions), then run the
-installer (on Windows) or just copy over /Applications/Criptoreal-Qt (on Mac) or
-criptoreald/criptoreal-qt (on Linux).
+Se você está usando uma versão mais antiga, desligue-a. Aguarde até que esteja completamente desligado (o que deve levar alguns minutos em versões mais antigas), e execute o instalador (no Windows) ou apenas substitua os arquivos em  /Applications/Criptoreal-Qt (no Mac) ou criptoreald/criptoreal-qt (no Linux).
 
-Downgrade warning
+Aviso - Downgrade
 -----------------
 
-### Downgrade to a version < 0.12.2.2
+### Downgrade para a versão < 0.12.2.2
 
-Because release 0.12.2.2 included the [per-UTXO fix](release-notes/criptoreal/release-notes-0.12.2.2.md#per-utxo-fix)
-which changed the structure of the internal database, you will have to reindex
-the database if you decide to use any pre-0.12.2.2 version.
+Como a versão 0.12.2.2 incluiu o [fix per-UTXO](release-notes/criptoreal/release-notes-0.12.2.2.md#per-utxo-fix)
+que mudou a estrutura do banco de dados interno, você terá que reindexar o banco de dados se você decidir usar qualquer versão anterior a 0.12.2.2.
 
-Wallet forward or backward compatibility was not affected.
+A compatibilidade da carteira não foi afetada.
 
-### Downgrade to 0.12.2.2
+### Downgrade para a versão 0.12.2.2
 
-Downgrading to 0.12.2.2 does not require any additional actions, should be
-fully compatible.
+Downgrade para a versão 0.12.2.2 não requer nenhuma ação adicional, deve ser totalmente compatível.
 
-Notable changes
+Mudanças notáveis
 ===============
 
-InstantSend fixes
+Correções InstantSend
 -----------------
 
-Coin selection could work slightly incorrect in some edge cases which could
-lead to a creation of an InstantSend transaction which only the local wallet
-would consider to be a good candidate for a lock. Such txes was not locked by
-the network but they were creating a confusion on the user side giving an
-impression of a slightly higher InstantSend failure rate.
+A seleção de moedas poderia funcionar de maneira incorreta em alguns casos, que poderiam levar a criação de uma transação do InstantSend, onde somente a carteira local consideraria ser um bom candidato para bloqueio. As Tx não foram bloqueadas pela rede, mas estavam criando uma confusão no lado do usuário, dando uma impressão de uma taxa de falha do InstantSend um pouco maior.
+  
+Outro problema corrigido nesta versão é que que os masternodes poderiam votar por um tx que não será aceito no mempool às vezes. Isto pode levar a uma situação em que os fundos do usuário seriam bloqueados, mesmo que a transação do InstantSend não apareça no lado do recebimento.
 
-Another issue fixed in this release is that masternodes could vote for a tx
-that is not going to be accepted to the mempool sometimes. This could lead to
-a situation when user funds would be locked even though InstantSend transaction
-would not show up on the receiving side.
-
-Fix -liquidityprovider option
+Correção da opção -liquidityprovider 
 -----------------------------
 
-Turned out that liquidityprovider mixing mode practically stopped working after
-recent improvements in the PrivateSend mixing algorithm due to a suboptimal
-looping which occurs only in this mode (due to a huge number of rounds). To fix
-the issue a small part of the mixing algorithm was reverted to a pre-0.12.2 one
-for this mode only. Regular users were not affected by the issue in any way and
-will continue to use the improved one just like before.
+Descobriu-se que o modo de mistura do produto de liquidez praticamente parou de funcionar após recentes melhorias no algoritmo de mistura PrivateSend, devido a um loop que ocorre apenas neste modo (devido a um grande número de rodadas). Para corrigir este problema, uma pequena parte do algoritmo foi revertida para um pré-0.12.2 apenas para este modo. Usuários regulares não foram afetados pela questão e continuarão a usar o aprimorado como antes.
 
-Other improvements and bug fixes
+Outras melhorias e correções de bugs
 --------------------------------
 
-This release also fixes a few crashes and compatibility issues.
+Esta versão também corrige algumas falhas e problemas de compatibilidade.
 
 
-0.12.2.3 Change log
+Change log 0.12.2.3 
 ===================
 
-See detailed [change log](https://github.com/criptoreal/criptoreal/compare/v0.12.2.2...criptoreal:v0.12.2.3) below.
+Veja o [change log](https://github.com/criptoreal/criptoreal/compare/v0.12.2.2...criptoreal:v0.12.2.3) detalhado abaixo.
 
 ### Backports:
 - [`068b20bc7`](https://github.com/criptoreal/criptoreal/commit/068b20bc7) Merge #8256: BUG: bitcoin-qt crash
-- [`f71ab1daf`](https://github.com/criptoreal/criptoreal/commit/f71ab1daf) Merge #11847: Fixes compatibility with boost 1.66 (#1836)
+- [`f71ab1daf`](https://github.com/criptoreal/criptoreal/commit/f71ab1daf) Merge #11847: Corrige a compatibilidade com o boost 1.66 (#1836)
 
 ### PrivateSend:
-- [`fa5fc418a`](https://github.com/criptoreal/criptoreal/commit/fa5fc418a) Fix -liquidityprovider option (#1829)
-- [`d261575b4`](https://github.com/criptoreal/criptoreal/commit/d261575b4) Skip existing masternode conections on mixing (#1833)
-- [`21a10057d`](https://github.com/criptoreal/criptoreal/commit/21a10057d) Protect CKeyHolderStorage via mutex (#1834)
-- [`476888683`](https://github.com/criptoreal/criptoreal/commit/476888683) Avoid reference leakage in CKeyHolderStorage::AddKey (#1840)
+- [`fa5fc418a`](https://github.com/criptoreal/criptoreal/commit/fa5fc418a) Corrige a opção -liquidityprovider (#1829)
+- [`d261575b4`](https://github.com/criptoreal/criptoreal/commit/d261575b4) Ignora as conexões masternode existentes no mixing (#1833)
+- [`21a10057d`](https://github.com/criptoreal/criptoreal/commit/21a10057d) Protege CKeyHolderStorage via mutex (#1834)
+- [`476888683`](https://github.com/criptoreal/criptoreal/commit/476888683) Evita fugas de referência em CKeyHolderStorage::AddKey (#1840)
 
 ### InstantSend:
-- [`d6e2aa843`](https://github.com/criptoreal/criptoreal/commit/d6e2aa843) Swap iterations and fUseInstantSend parameters in ApproximateBestSubset (#1819)
-- [`c9bafe154`](https://github.com/criptoreal/criptoreal/commit/c9bafe154) Vote on IS only if it was accepted to mempool (#1826)
+- [`d6e2aa843`](https://github.com/criptoreal/criptoreal/commit/d6e2aa843) Troca interações e os parâmetros fUseInstantSend em ApproximateBestSubset (#1819)
+- [`c9bafe154`](https://github.com/criptoreal/criptoreal/commit/c9bafe154) Vota em IS apenas se for aceito no mempool (#1826)
 
-### Other:
-- [`ada41c3af`](https://github.com/criptoreal/criptoreal/commit/ada41c3af) Fix crash on exit when -createwalletbackups=0 (#1810)
-- [`63e0e30e3`](https://github.com/criptoreal/criptoreal/commit/63e0e30e3) bump version to 0.12.2.3 (#1827)
+### Outros:
+- [`ada41c3af`](https://github.com/criptoreal/criptoreal/commit/ada41c3af) Corrige o crash na saída quando -createwalletbackups=0 (#1810)
+- [`63e0e30e3`](https://github.com/criptoreal/criptoreal/commit/63e0e30e3) versão bump para 0.12.2.3 (#1827)
 
-Credits
+Créditos
 =======
 
-Thanks to everyone who directly contributed to this release:
+Obrigado a todos que contribuíram diretamente para esta versão:
 
 - Alexander Block
 - lodgepole
 - UdjinM6
 
-As well as Bitcoin Core Developers and everyone that submitted issues,
-reviewed pull requests or helped translating on
+Assim como os desenvolvedores Criptoreal Core e todos que mostraram os problemas, revisaram pull requests ou ajudaram a traduzir no
 [Transifex](https://www.transifex.com/projects/p/criptoreal/).
 
 
-Older releases
+Outras versões
 ==============
 
-Criptoreal was previously known as Darkcoin.
+Criptoreal era conhecido anteriormente como Darkcoin.
 
-Darkcoin tree 0.8.x was a fork of Litecoin tree 0.8, original name was XCoin
-which was first released on Jan/18/2014.
+Darkcoin tree 0.8.x foi um fork do Litecoin tree 0.8, o nome original foi XCoin, que foi lançado pela primeira vez em 18/01/2014.
 
-Darkcoin tree 0.9.x was the open source implementation of masternodes based on
-the 0.8.x tree and was first released on Mar/13/2014.
+Darkcoin tree 0.9.x foi a implementação do código livre dos masternodes baseado na tree 0.8.x e foi lançada pela primeira vez em 13/03/2014.
 
-Darkcoin tree 0.10.x used to be the closed source implementation of Darksend
-which was released open source on Sep/25/2014.
+Darkcoin tree 0.10.x foi usado para implementar o Darksend que foi lançado em 25/09/2014.
 
-Criptoreal Core tree 0.11.x was a fork of Bitcoin Core tree 0.9,
-Darkcoin was rebranded to Criptoreal.
+Criptoreal Core tree 0.11.x era um fork do Bitcoin Core tree 0.9, Darkcoin foi renomeado para Criptoreal.
 
-Criptoreal Core tree 0.12.0.x was a fork of Bitcoin Core tree 0.10.
+Criptoreal Core tree 0.12.0.x era um fork do Bitcoin Core tree 0.10.
 
-Criptoreal Core tree 0.12.1.x was a fork of Bitcoin Core tree 0.12.
+Criptoreal Core tree 0.12.1.x era um fork do Bitcoin Core tree 0.12.
 
-These release are considered obsolete. Old release notes can be found here:
+Estas versões são consideradas obsoletas. Notas de lançamento mais antidas podem ser encontradas aqui:
 
-- [v0.12.2.2](release-notes/criptoreal/release-notes-0.12.2.2.md) released Dec/17/2017
-- [v0.12.2](release-notes/criptoreal/release-notes-0.12.2.md) released Nov/08/2017
-- [v0.12.1](release-notes/criptoreal/release-notes-0.12.1.md) released Feb/06/2017
-- [v0.12.0](release-notes/criptoreal/release-notes-0.12.0.md) released Jun/15/2015
-- [v0.11.2](release-notes/criptoreal/release-notes-0.11.2.md) released Mar/04/2015
-- [v0.11.1](release-notes/criptoreal/release-notes-0.11.1.md) released Feb/10/2015
-- [v0.11.0](release-notes/criptoreal/release-notes-0.11.0.md) released Jan/15/2015
-- [v0.10.x](release-notes/criptoreal/release-notes-0.10.0.md) released Sep/25/2014
-- [v0.9.x](release-notes/criptoreal/release-notes-0.9.0.md) released Mar/13/2014
+- [v0.12.2.2](release-notes/criptoreal/release-notes-0.12.2.2.md) lançado em 17/12/2017
+- [v0.12.2](release-notes/criptoreal/release-notes-0.12.2.md) lançado em 08/11/2017
+- [v0.12.1](release-notes/criptoreal/release-notes-0.12.1.md) lançado em 06/02/2017
+- [v0.12.0](release-notes/criptoreal/release-notes-0.12.0.md) lançado em 15/06/2015
+- [v0.11.2](release-notes/criptoreal/release-notes-0.11.2.md) lançado em 04/03/2015
+- [v0.11.1](release-notes/criptoreal/release-notes-0.11.1.md) lançado em 10/02/2015
+- [v0.11.0](release-notes/criptoreal/release-notes-0.11.0.md) lançado em 15/01/2015
+- [v0.10.x](release-notes/criptoreal/release-notes-0.10.0.md) lançado em 25/09/2014
+- [v0.9.x](release-notes/criptoreal/release-notes-0.9.0.md) lançado em 13/03/2014
 
