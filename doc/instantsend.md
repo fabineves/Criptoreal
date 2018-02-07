@@ -1,23 +1,23 @@
-## InstantSend Technical Information
+## Informação Técnica InstantSend
 
-InstantSend has been integrated into the Core Daemon in two ways:
-* "push" notifications (ZMQ and `-instantsendnotify` cmd-line/config option);
-* RPC commands.
+InstantSend foi integrado no Daemon Core de duas maneiras:
+* notificações "push" (ZMQ e opção `-instantsendnotify` cmd-line/config );
+* Comandos RPC.
 
 #### ZMQ
 
-When a "Transaction Lock" occurs the hash of the related transaction is broadcasted through ZMQ using both the `zmqpubrawtxlock` and `zmqpubhashtxlock` channels.
+Quando ocorre um "Bloqueio de Transação" o hash da transação relacionada é transmitida através do ZMQ usando os canais `zmqpubrawtxlock` e `zmqpubhashtxlock`.
 
-* `zmqpubrawtxlock`: publishes the raw transaction when locked via InstantSend
-* `zmqpubhashtxlock`: publishes the transaction hash when locked via InstantSend
+* `zmqpubrawtxlock`: publica a transação raw quando bloqueada via InstantSend
+* `zmqpubhashtxlock`: ppublica a transação hash quando bloqueada via InstantSend
 
-This mechanism has been integrated into Bitcore-Node-Criptoreal which allows for notification to be broadcast through Insight API in one of two ways:
+Este mecanismo foi integrado no Bitcore-Node-Criptoreal, que permite que a notificação seja transmitida através da Insight API usando uma destas duas formas:
 * WebSocket: [https://github.com/criptoreal/insight-api-criptoreal#web-socket-api](https://github.com/criptoreal/insight-api-criptoreal#web-socket-api)
 * API: [https://github.com/criptoreal/insight-api-criptoreal#instantsend-transactions](https://github.com/criptoreal/insight-api-criptoreal#instantsend-transactions)
 
-#### Command line option
+#### Opção de linha de comando
 
-When a wallet InstantSend transaction is successfully locked a shell command provided in this option is executed (`%s` in `<cmd>` is replaced by TxID):
+Quando uma transação da carteira InstantSend transaction é bloqueada com sucesso, um comando shell fornecido nesta opção é executado (`%s` em `<cmd>` é substituído por TxID):
 
 ```
 -instantsendnotify=<cmd>
@@ -25,56 +25,56 @@ When a wallet InstantSend transaction is successfully locked a shell command pro
 
 #### RPC
 
-Details pertaining to an observed "Transaction Lock" can also be retrieved through RPC, it’s important however to understand the underlying mechanism.
+Os detalhes relativos a um "bloqueio de transação" observado, também podem ser recuperados através do RPC, é importante, no entanto, entender o mecanismo subjacente.
 
-By default, the Criptoreal Core daemon will launch using the following constant:
+Por padrão, o daemon Criptoreal Core será iniciado usando a seguinte constant:
 
 ```
 static const int DEFAULT_INSTANTSEND_DEPTH = 5;
 ```
 
-This value can be overridden by passing the following argument to the Criptoreal Core daemon:
+Este valor pode ser substituído passando o seguinte argumento para o daemon Criptoreal Core:
 
 ```
 -instantsenddepth=<n>
 ```
 
-The key thing to understand is that this value indicates the number of "confirmations" a successful Transaction Lock represents. When Wallet RPC commands which support `minconf` and `addlockconf` parameters (such as `listreceivedbyaddress`) are performed and `addlockconf` is `true`, then `instantsenddepth` attribute is taken into account when returning information about the transaction. In this case the value in `confirmations` field you see through RPC is showing the number of `"Blockchain Confirmations" + "InstantSend Depth"` (assuming the funds were sent via InstantSend).
+A chave é entender que este valor indica o número de "confirmações" que um sincronismo de transação bem sucedido representa. Quando os comandos RPC da carteira que suportam os parâmetros`minconf` e `addlockconf` (assim como `listreceivedbyaddress`) são executados e  `addlockconf` és `true`, então o atributo `instantsenddepth` é levado em consideração ao retornar as informações sobre a transação. Neste caso, o valor no campo `confirmations` que você vê através do RPC é o número de `"Blockchain Confirmations" + "InstantSend Depth"` (assumindo que os fundos foram enviados via InstantSend).
 
-There is also a field named `instantlock` (that is present in commands such as `listsinceblock`). The value in this field indicates whether a given transaction is locked via InstantSend.
+Também existe um campo de nome `instantlock` (que está presente em comandos como o `listsinceblock`). O valor neste campo indica se uma determinada transação está bloqueada via InstantSend.
 
-**Examples**
+**Examplos**
 
 1. `listreceivedbyaddress 0 true`
-   * InstantSend transaction just occurred:
+   * Transação InstantSend acabou de ocorrer:
         * confirmations: 5
-   * InstantSend transaction received one confirmation from blockchain:
+   * Transação InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 6
-   * non-InstantSend transaction just occurred:
+   * Uma transação não-InstantSend transaction acabou de ocorrer:
         * confirmations: 0
-   * non-InstantSend transaction received one confirmation from blockchain:
+   * Uma transação não-InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 1
 
 2. `listreceivedbyaddress 0`
-   * InstantSend transaction just occurred:
+   * Transação InstantSend acabou de ocorrer:
         * confirmations: 0
-   * InstantSend transaction received one confirmation from blockchain:
+   * Transação InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 1
-   * non-InstantSend transaction just occurred:
+   * Uma transação não-InstantSend transaction acabou de ocorrer:
         * confirmations: 0
-   * non-InstantSend transaction received one confirmation from blockchain:
+   * Uma transação não-InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 1
 
 3. `listsinceblock`
-    * InstantSend transaction just occurred:
+    * Transação InstantSend acabou de ocorrer:
         * confirmations: 0
         * instantlock: true
-    * InstantSend transaction received one confirmation from blockchain:
+    * Transação InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 1
         * instantlock: true
-    * non-InstantSend transaction just occurred:
+    * Uma transação não-InstantSend transaction acabou de ocorrer:
         * confirmations: 0
         * instantlock: false
-    * non-InstantSend transaction received one confirmation from blockchain:
+    * Uma transação não-InstantSend transaction recebeu uma confirmação da blockchain:
         * confirmations: 1
         * instantlock: false
