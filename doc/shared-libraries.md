@@ -1,44 +1,47 @@
-Shared Libraries
+Bibliotecas Compartilhadas
 ================
 
-## criptorealconsensus
+## consenso do criptoreal
 
-The purpose of this library is to make the verification functionality that is critical to Criptoreal's consensus available to other applications, e.g. to language bindings.
+O propósito desta biblioteca é fazer com que a verificação da funcionalidade que é crítica para o consenso do Criptoreal, fique disponível para outras aplicações, e.x. para ligações de idiomas.
 
 ### API
 
-The interface is defined in the C header `criptorealconsensus.h` located in  `src/script/criptorealconsensus.h`.
+A interface é definida no cabeçalho C `criptorealconsensus.h` localizado em  `src/script/criptorealconsensus.h`.
 
-#### Version
+#### Versão
 
-`criptorealconsensus_version` returns an `unsigned int` with the the API version *(currently at an experimental `0`)*.
+`criptorealconsensus_version` retorna um `unsigned int` com a versão da API *(atualmente em um experimento `0`)*.
 
-#### Script Validation
+#### Validação do Script
 
-`criptorealconsensus_verify_script` returns an `int` with the status of the verification. It will be `1` if the input script correctly spends the previous output `scriptPubKey`.
+`criptorealconsensus_verify_script` retorna um `int` com o status da verificação. Será `1` se o script de entrada gastar a saída anterior `scriptPubKey`.
 
-##### Parameters
-- `const unsigned char *scriptPubKey` - The previous output script that encumbers spending.
-- `unsigned int scriptPubKeyLen` - The number of bytes for the `scriptPubKey`.
-- `const unsigned char *txTo` - The transaction with the input that is spending the previous output.
-- `unsigned int txToLen` - The number of bytes for the `txTo`.
-- `unsigned int nIn` - The index of the input in `txTo` that spends the `scriptPubKey`.
-- `unsigned int flags` - The script validation flags *(see below)*.
-- `criptorealconsensus_error* err` - Will have the error/success code for the operation *(see below)*.
+##### Parâmetros
+- `const unsigned char *scriptPubKey` - O script de saída anterior que não consegue ser gasto.
+- `unsigned int scriptPubKeyLen` - O número de bytes para o `scriptPubKey`.
+- `const unsigned char *txTo` - A transação com a entrada que está gastando a saída anterior.
+- `unsigned int txToLen` - O número de bytes para o `txTo`.
+- `unsigned int nIn` - O índice de entrada em `txTo` que gasta o `scriptPubKey`.
+- `unsigned int flags` - Os sinalizadores de validação do script *(veja abaixo)*.
+- `criptorealconsensus_error* err` - Terá o código de erro/sucesso para a operação *(veja abaixo)*.
 
-##### Script Flags
+##### Script Flags (Sinalizadores de Script)
 - `criptorealconsensus_SCRIPT_FLAGS_VERIFY_NONE`
-- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_P2SH` - Evaluate P2SH ([BIP16](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)) subscripts
-- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_DERSIG` - Enforce strict DER ([BIP66](https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki)) compliance
+- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_P2SH` - Avalia os subscritos P2SH ([BIP16](https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki)) 
+- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_DERSIG` - Reforça rigorosamente a conformidade DER ([BIP66](https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki)) 
+- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_NULLDUMMY` - Reforça NULLDUMMY ([BIP147](https://github.com/bitcoin/bips/blob/master/bip-0147.mediawiki))
+- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_CHECKLOCKTIMEVERIFY` - Habilita CHECKLOCKTIMEVERIFY ([BIP65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki))
+- `criptorealconsensus_SCRIPT_FLAGS_VERIFY_CHECKSEQUENCEVERIFY` - Habilita CHECKSEQUENCEVERIFY ([BIP112](https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki))
 
 ##### Errors
-- `criptorealconsensus_ERR_OK` - No errors with input parameters *(see the return value of `criptorealconsensus_verify_script` for the verification status)*
-- `criptorealconsensus_ERR_TX_INDEX` - An invalid index for `txTo`
-- `criptorealconsensus_ERR_TX_SIZE_MISMATCH` - `txToLen` did not match with the size of `txTo`
-- `criptorealconsensus_ERR_DESERIALIZE` - An error deserializing `txTo`
+- `criptorealconsensus_ERR_OK` - Nenhum erro com os parâmetros de entrada *(veja retorno do valor de `bitcoinconsensus_verify_script` para a verificação do status)*
+- `criptorealconsensus_ERR_TX_INDEX` - Um índice inválido para `txTo`
+- `criptorealconsensus_ERR_TX_SIZE_MISMATCH` - `txToLen` não coincidiu com o tamanho de `txTo`
+- `criptorealconsensus_ERR_DESERIALIZE` - Um erro de desserialização `txTo`
 
-### Example Implementations
-- [NBitcoin](https://github.com/NicolasDorier/NBitcoin/blob/master/NBitcoin/Script.cs#L814) (.NET Bindings)
-- [node-libbitcoinconsensus](https://github.com/bitpay/node-libbitcoinconsensus) (Node.js Bindings)
-- [java-libbitcoinconsensus](https://github.com/dexX7/java-libbitcoinconsensus) (Java Bindings)
-- [bitcoinconsensus-php](https://github.com/Bit-Wasp/bitcoinconsensus-php) (PHP Bindings)
+### Implementações de exemplo
+- [NBitcoin](https://github.com/NicolasDorier/NBitcoin/blob/master/NBitcoin/Script.cs#L814) (Ligações .NET)
+- [node-libbitcoinconsensus](https://github.com/bitpay/node-libbitcoinconsensus) (Ligações Node.js)
+- [java-libbitcoinconsensus](https://github.com/dexX7/java-libbitcoinconsensus) (Ligações Java)
+- [bitcoinconsensus-php](https://github.com/Bit-Wasp/bitcoinconsensus-php) (Ligações PHP)
