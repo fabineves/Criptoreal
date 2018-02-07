@@ -1,125 +1,92 @@
-Sample init scripts and service configuration for criptoreald
+Exemplos de script de inicialização e configuração de serviço para criptoreald
 ==========================================================
 
-Sample scripts and configuration files for systemd, Upstart and OpenRC
-can be found in the contrib/init folder.
+Scripts de exemplo e arquivos de configuração para systemd, Upstart e OpenRC podem ser encontrados na pasta contrib/init
 
-    contrib/init/criptoreald.service:    systemd service unit configuration
-    contrib/init/criptoreald.openrc:     OpenRC compatible SysV style init script
-    contrib/init/criptoreald.openrcconf: OpenRC conf.d file
-    contrib/init/criptoreald.conf:       Upstart service configuration file
-    contrib/init/criptoreald.init:       CentOS compatible SysV style init script
+    contrib/init/criptoreald.service:    unidade de configuração de serviço systemd
+    contrib/init/criptoreald.openrc:     Script de inicialização OpenRC compatível com SysV
+    contrib/init/criptoreald.openrcconf: arquivo OpenRC conf.d 
+    contrib/init/criptoreald.conf:       Arquivo de configuração do serviço de inicialização
+    contrib/init/criptoreald.init:       Script de inicialização SysV compatível com CentOS
 
-1. Service User
+1. Usuário de serviço
 ---------------------------------
 
-All three Linux startup configurations assume the existence of a "criptoreal" user
-and group.  They must be created before attempting to use these scripts.
-The OS X configuration assumes criptoreald will be set up for the current user.
+Todas as três configurações de inicialização do Linux assumem a existência de um usuário e um grupo "criptoreal". Eles devem ser criados antes de tentar usar estes scripts. A configuração do OS X assume que o criptoreald será configurado para o usuário atual.
 
 2. Configuration
 ---------------------------------
 
-At a bare minimum, criptoreald requires that the rpcpassword setting be set
-when running as a daemon.  If the configuration file does not exist or this
-setting is not set, criptoreald will shutdown promptly after startup.
+Em um mínimo, o criptoreald exige que a configuração rpcpassword seja definida quando executada como um daemon. Se o arquivo de configuração não existir ou esta configuração não estiver definida, o bitcoind será desligado imediatamente após a inicialização.
+Esta senha não precisa ser lembrada ou digitada, pois é usada principalmente como um token fixo onde o bitcoind e os programas são lidos a partir do arquivo de configuração, entretanto é recomendado que uma senha forte e segura seja usada, pois ela é de segurança crítica para garantir a carteira caso esteja habilitada.
 
-This password does not have to be remembered or typed as it is mostly used
-as a fixed token that criptoreald and client programs read from the configuration
-file, however it is recommended that a strong and secure password be used
-as this password is security critical to securing the wallet should the
-wallet be enabled.
+Se criptoreald for executado com o sinalizador "-server" (definido por padrão) e nenhuma rpcpassword está configurada, ele usará um arquivo de cookie especial para autenticação. O cookie é gerado com conteúdo aleatório quando o daemon é iniciado e excluído quando terminado. O acesso de leitura a este arquivo controla quem pode acessá-lo através do RPC.
 
-If criptoreald is run with the "-server" flag (set by default), and no rpcpassword is set,
-it will use a special cookie file for authentication. The cookie is generated with random
-content when the daemon starts, and deleted when it exits. Read access to this file
-controls who can access it through RPC.
+Por padrão, o cookie é armazenado no diretório de dados, mas sua localização pode ser substituída pela opção '-rpccookiefile'.
 
-By default the cookie is stored in the data directory, but it's location can be overridden
-with the option '-rpccookiefile'.
+Isto permite a execução do criptoreald sem ter que fazer qualquer configuração manual.
 
-This allows for running criptoreald without having to do any manual configuration.
+`conf`, `pid`, e `wallet` aceitam caminhos relativos que são interpretados como relativos ao diretório de dados. `wallet` *somente* suporta caminhos relativos.
 
-`conf`, `pid`, and `wallet` accept relative paths which are interpreted as
-relative to the data directory. `wallet` *only* supports relative paths.
+Para um exemplo de arquivo de configuração que descreve as configurações, consulte `contrib/debian/examples/criptoreal.conf`.
 
-For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/criptoreal.conf`.
-
-3. Paths
+3. Caminhos
 ---------------------------------
 
 3a) Linux
 
-All three configurations assume several paths that might need to be adjusted.
+Todas as três configurações assumem vários caminhos que talvez precisem ser ajustados.
 
-Binary:              `/usr/bin/criptoreald`  
-Configuration file:  `/etc/criptoreal/criptoreal.conf`  
-Data directory:      `/var/lib/criptoreald`  
-PID file:            `/var/run/criptoreald/criptoreald.pid` (OpenRC and Upstart) or `/var/lib/criptoreald/criptoreald.pid` (systemd)  
-Lock file:           `/var/lock/subsys/criptoreald` (CentOS)  
+Binários:              `/usr/bin/criptoreald`  
+Arqivo de configuração:  `/etc/criptoreal/criptoreal.conf`  
+Diretório de dados:      `/var/lib/criptoreald`  
+Arquivo PID:            `/var/run/criptoreald/criptoreald.pid` (OpenRC and Upstart) or `/var/lib/criptoreald/criptoreald.pid` (systemd) 
+Arquivo Lock:           `/var/lock/subsys/criptoreald` (CentOS)  
 
-The configuration file, PID directory (if applicable) and data directory
-should all be owned by the criptoreal user and group.  It is advised for security
-reasons to make the configuration file and data directory only readable by the
-criptoreal user and group.  Access to criptoreal-cli and other criptoreald rpc clients
-can then be controlled by group membership.
+O arquivo de configuração, o diretório PID (se aplicável) e o diretório de dados devem ser todos pertencentes ao usuario e ao grupo criptoreal. É aconselhável por motivos de segurança tornar o arquivo de configuração e o diretório de dados legíveis apenas para o usuário e grupo criptoreal.  O acesso ao criptoreal-cli e outros clientes rpc criptoreald podem ser controlados pela associação de grupo.
 
 3b) Mac OS X
 
-Binary:              `/usr/local/bin/criptoreald`  
-Configuration file:  `~/Library/Application Support/Criptoreal/criptoreal.conf`  
-Data directory:      `~/Library/Application Support/Criptoreal`
-Lock file:           `~/Library/Application Support/Criptoreal/.lock`
+Binário:              `/usr/local/bin/criptoreald`  
+Arquivo de Configuração:  `~/Library/Application Support/Criptoreal/criptoreal.conf`  
+Diretório de dados:      `~/Library/Application Support/Criptoreal`
+Arquivo Lock:           `~/Library/Application Support/Criptoreal/.lock`
 
-4. Installing Service Configuration
+4. Instalando a configuração do serviço
 -----------------------------------
 
 4a) systemd
 
-Installing this .service file consists of just copying it to
-/usr/lib/systemd/system directory, followed by the command
-`systemctl daemon-reload` in order to update running systemd configuration.
+A instalação deste arquivo .service consiste apenas em copiá-lo para /usr/lib/systemd/diretório do sistema, seguido pelo comando `systemctl daemon-reload` para atualizar a execução da configuração systemd.
 
-To test, run `systemctl start criptoreald` and to enable for system startup run
-`systemctl enable criptoreald`
+Para testar, execute `systemctl start criptoreald` e para habilitar para inicialização execute `systemctl enable criptoreald`
 
 4b) OpenRC
 
-Rename criptoreald.openrc to criptoreald and drop it in /etc/init.d.  Double
-check ownership and permissions and make it executable.  Test it with
-`/etc/init.d/criptoreald start` and configure it to run on startup with
-`rc-update add criptoreald`
+Renomeie criptoreald.openrc para criptoreald e solte-o em /etc/init.d. Verifique a propriedade e as permissões e torne-o executável.  Teste com `/etc/init.d/criptoreald start` e configure para executar na inicialização com `rc-update add criptoreald`
 
-4c) Upstart (for Debian/Ubuntu based distributions)
+4c) Upstart (para distribuições baseadas em Debian/Ubuntu)
 
-Drop criptoreald.conf in /etc/init.  Test by running `service criptoreald start`
-it will automatically start on reboot.
+Coloque criptoreald.conf em /etc/init. Teste executando `service criptoreald start`. Ele será executado automaticamente na inicialização.
 
-NOTE: This script is incompatible with CentOS 5 and Amazon Linux 2014 as they
-use old versions of Upstart and do not supply the start-stop-daemon utility.
+NOTA: Este script é incompatível com o CentOS 5 e o Amazon Linux 2014, pois usam versões antigas do Upstart e não fornecem o utilitário start-stop-daemon.
 
 4d) CentOS
 
-Copy criptoreald.init to /etc/init.d/criptoreald. Test by running `service criptoreald start`.
+Copie criptoreald.init para /etc/init.d/criptoreald. Teste executando `service criptoreald start`.
 
-Using this script, you can adjust the path and flags to the criptoreald program by
-setting the CRIPTOREALD and FLAGS environment variables in the file
-/etc/sysconfig/criptoreald. You can also use the DAEMONOPTS environment variable here.
+Usando este script, você pode ajustar o caminho e os sinalizadores para o programa criptoreald definindo as variáveis de ambiente CRIPTOREALD e FLAGS no arquivo /etc/sysconfig/criptoreald. Você tambem pode usar a variável de ambiente DAEMONOPTS aqui.
+
 
 4e) Mac OS X
 
-Copy org.criptoreal.criptoreald.plist into ~/Library/LaunchAgents. Load the launch agent by
-running `launchctl load ~/Library/LaunchAgents/org.criptoreal.criptoreald.plist`.
+Copie org.criptoreal.criptoreald.plist para ~/Library/LaunchAgents. Carregue o agente executando `launchctl load ~/Library/LaunchAgents/org.criptoreal.criptoreald.plist`.
 
-This Launch Agent will cause criptoreald to start whenever the user logs in.
+Este agente fará com que o criptoreald inicie assim que o usuário efetuar o login.
 
-NOTE: This approach is intended for those wanting to run criptoreald as the current user.
-You will need to modify org.criptoreal.criptoreald.plist if you intend to use it as a
-Launch Daemon with a dedicated criptoreal user.
+NOTA: Esta abordagem destina-se a quem desejar executar o criptoreald como usuário atual. Você precisará modificar org.criptoreal.criptoreald.plist  se você pretende usá-lo como Launch Daemon com um usuário bitcoin dedicado.
 
 5. Auto-respawn
 -----------------------------------
 
-Auto respawning is currently only configured for Upstart and systemd.
-Reasonable defaults have been chosen but YMMV.
+Auto respawning atualmente só está configurado para Upstart e systemd. Padrões razoáveis foram escolhidos, mas YMMV.
