@@ -1,57 +1,56 @@
-NOTE : 12.1 -- REWRITE
+NOTA : 12.1 -- REESCREVER
 
 
-Masternode Budget API
+Budget Masternode API
 =======================
 
-Criptoreal now supports full decentralized budgets that are paid directly from the blockchain via superblocks once per month.
+Criptoreal agora suporta budgets descentralizados completos que são pagos diretamente na blockchain via superblocks uma vez por mês.
 
-Budgets go through a series of stages before being paid:
- * prepare - create a special transaction that destroys coins in order to make a proposal
- * submit - propagate transaction to peers on network
- * voting - lobby for votes on your proposal
- * get enough votes - make it into the budget
- * finalization - at the end of each payment period, proposals are sorted then compiled into a finalized budget
- * finalized budget voting - masternodes that agree with the finalization will vote on that budget
- * payment - the winning finalized budget is paid
+Os budgets passam por uma série de etapas antes de serem pagos:
+ * preparar - criar uma transação especial que destrói moedas para fazer uma proposta
+ * enviar - propagar a transação para pares na rede
+ * votação - lobby para votação na sua proposta
+ * Obter votos suficientes - faça isto dentro do budget
+ * finalização - no final de cada período de pagamento, as propostas são ordenadas, depois compiladas em um budget finalizado
+ * votação finalizada de budget - Os masternodes que concordam com a finalização irão votar neste budget
+ * pagamento - o budget final vencedor é pago
 
-
-1. Prepare collateral transaction
+1. Preparar a transação colateral
 --
 
-In this transaction we prepare collateral for "_cool-project_". This proposal will pay _1200_ CRS, _12_ times over the course of a year totaling _24000_ CRS.
+Nesta transação, preparamos o colateral para "_cool-project_". Esta proposta pagará _1200_ CRS, _12_ vezes ao longo de um ano, totalizando _24000_ CRS.
 
-**Warning: if you change any fields within this command, the collateral transaction will become invalid.**
+**Aviso: Se você modificar qualquer campo dentro deste comando, a transação colateral se torna inválida.**
 
-Format: ```mngovernance prepare proposal-name url payment-count block-start criptoreal-address monthly-payment-criptoreal```
+Formato: ```mngovernance prepare proposal-name url payment-count block-start criptoreal-address monthly-payment-criptoreal```
 
-Example: ```mngovernance prepare cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 true```
+Examplo: ```mngovernance prepare cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 true```
 
-Output: ```464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
+Saída: ```464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
-This is the collateral hash, copy this output for the next step.
+Este é o hash colateral, copie esta saída para a próxima etapa.
 
-2 Submit proposal to network
+2 Enviar proposta para a rede
 --
 
-Now we can submit our proposal to the network.
+Agora podemos enviar nossa proposta para a rede.
 
-Format: ```mngovernance submit proposal-name url payment-count block-start criptoreal-address monthly-payment-criptoreal fee-tx```
+Formato: ```mngovernance submit proposal-name url payment-count block-start criptoreal-address monthly-payment-criptoreal fee-tx```
 
-Example: ```mngovernance submit cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
+Examplo: ```mngovernance submit cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
-Output : ```a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
+Saída : ```a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
 
-This is your proposal hash, which other nodes will use to vote on it.
+Esta é sua proposta hash, em que os outros nós irão usar para votação.
 
-3. Lobby for votes
+3. Lobby para votos
 --
 
-Double check your information.
+Verifique duas vezes suas informações.
 
-Format: ```mngovernance getproposal proposal-hash```
+Formato: ```mngovernance getproposal proposal-hash```
 
-Example: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
+Examplo: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
 ￼
 ```
 {
@@ -75,16 +74,16 @@ Example: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b
 }
 ```
 
-If everything looks correct, you can ask for votes from other masternodes. To vote on a proposal, load a wallet with _masternode.conf_ file. You do not need to access your cold wallet to vote for proposals.
+Se tudo estiver correto, você pode pedir votos de outros masternodes. Para votar em uma proposta, carregue uma carteira com o arquivo _masternode.conf_. Você não precisa acessar sua carteira fria para votar em propostas.
 
-Format: ```mngovernance vote proposal-hash [yes|no]```
+Formato: ```mngovernance vote proposal-hash [yes|no]```
 
-Example: ```mngovernance vote a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491 yes```
+Examplo: ```mngovernance vote a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491 yes```
 
-4.  Make it into the budget
+4.  Passar para o budget
 --
 
-After you get enough votes, execute ```mngovernance projection``` to see if you made it into the budget. If you the budget was finalized at this moment which proposals would be in it. Note: Proposals must be active at least 1 day on the network and receive 10% of the masternode network in yes votes in order to qualify (E.g. if there is 3500 masternodes, you will need 350 yes votes.)
+Após conseguir votos suficientes, execute ```mngovernance projection``` para ver se conseguiu chegar ao budget. Se o seu budget foi finalizado neste momento, as propostas estarão nele. Nota: As propostas devem estar ativas pelo menos um dia na rede e receber 10% da rede masternode em votos sim para poder se qualificar (Ex. se existem 3500 masternodes, precisará de 350 votos sim.)
 
 ```mngovernance projection```:￼
 ```
@@ -110,7 +109,7 @@ After you get enough votes, execute ```mngovernance projection``` to see if you 
 }
 ```
 
-5. Finalized budget
+5. Budget finalizado
 --
 
 ```
@@ -125,35 +124,35 @@ After you get enough votes, execute ```mngovernance projection``` to see if you 
     },
 ```
 
-6. Get paid
+6. Seja pago
 --
 
-When block ```1000000``` is reached you'll receive a payment for ```1200``` CRS to ```y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7```.
+Quando o bloco ```1000000``` é alcançado, você receberá um pagamento de ```1200``` CRS para ```y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7```.
 
-7. Command list
+7. Lista de Comandos
 --
 
-The following RPC commands are supported:
+Os seguintes comandos RPC são suportados:
 
  - mngovernance "command"... ( "passphrase" )
-  - check              - Scan proposals and remove invalid from proposals list
-  - prepare            - Prepare proposal by signing and creating tx
-  - submit             - Submit proposal to network
-  - getproposalhash    - Get proposal hash(es) by proposal name
-  - getproposal        - Show proposal
-  - getvotes           - Show detailed votes list for proposal
-  - list               - List all proposals
-  - nextblock          - Get info about next superblock for budget system
-  - nextsuperblocksize - Get superblock size for a given blockheight
-  - projection         - Show the projection of which proposals will be paid the next cycle
-  - vote               - Vote on a proposal by single masternode (using criptoreal.conf setup)
-  - vote-many          - Vote on a proposal by all masternodes (using masternode.conf setup)
-  - vote-alias         - Vote on a proposal by alias
+  - check              - Analise as propostas e remova os inválidos da lista de propostas
+  - prepare            - Prepare a proposta assinando e criado o tx
+  - submit             - Enviar a proposta para a rede
+  - getproposalhash    - Obter proposta hash por nome da proposta
+  - getproposal        - Mostrar proposta
+  - getvotes           - Mostrar lista de votos por proposta
+  - list               - Listar todas as propostas
+  - nextblock          - Obtenha informações sobre o próximo superblock para o sistema de budget
+  - nextsuperblocksize - Obtenha o tamanho do superblock para uma altura de bloqueio
+  - projection         - Mostra a projeção das propostas que serão pagas no próximo ciclo
+  - vote               - Vota em uma proposta por um único masternode (usando a configuração criptoreal.conf)
+  - vote-many          - Vota em uma proposta por todos os masternodes (usando a configuração masternode.conf)
+  - vote-alias         - Vota em uma proposta por alias
  - mnfinalbudget "command"... ( "passphrase" )
-  - vote-many   - Vote on a finalized budget
-  - vote        - Vote on a finalized budget
-  - show        - Show existing finalized budgets
-  - getvotes    - Get vote information for each finalized budget
-  - prepare     - Manually prepare a finalized budget
-  - submit      - Manually submit a finalized budget
+  - vote-many   - Vota em budget finalizado
+  - vote        - Vota em budget finalizado
+  - show        - Mostra todos os budgets finalizados existentes
+  - getvotes    - Obtém informações de voto para cada budget finalizado
+  - prepare     - Prepara manualmente um budget finalizado
+  - submit      - Envia manualmente um budget finalizado
 
