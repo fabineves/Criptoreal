@@ -50,6 +50,6 @@ Alterações em traduções e novas traduções podem ser enviadas para [a pági
 
 Traduções são periodicamente retiradas da Transifex e mescladas para o repositório git. Veja o [processo de tradução](doc/translation_process.md) para detalhes sobre como isso funciona.
 
-**Important**: Nós não aceitamos mudanças de tradução, pois as pull requests no GitHub do Transifex automaticamente substituiria os arquivos.
+**Importante**: Nós não aceitamos mudanças de tradução, pois as pull requests no GitHub do Transifex automaticamente substituiria os arquivos.
 
 Os tradutores também devem seguir o [forum](https://www.criptoreal.org/forum/topic/criptoreal-worldwide-collaboration.88/).
