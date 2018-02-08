@@ -21,7 +21,7 @@ As convenções de codificação do projeto localizadas em [doc/developer-notes.
 
 Em geral [os commits devem ser atômicos](https://en.wikipedia.org/wiki/Atomic_commit#Atomic_commit_convention) e os diffs devem ser fáceis de ler. Por este motivo, não misture nenhuma correção de formatação ou movimentos de código com mudanças de código reais.
 
-As mensagens Commit devem ser detalhadas por padrão consistindo uma linha de assunto curto (50 caracteres no máximo), uma linha em branco e um texto explicativo detalhado com parágrafo(s) separado(s); a menos que o título seja auto-explicativo (como "Erro corrigido no no main.cpp") então uma única linha de título é suficiente. As mensagens commit devem ser úteis para as pessoas que leem seu código no futuro, então explique o raciocínio das suas decisões. Maiores explicações [aqui](http://chris.beams.io/posts/git-commit/).
+As mensagens Commit devem ser detalhadas por padrão consistindo uma linha de assunto curto (50 caracteres no máximo), uma linha em branco e um texto explicativo detalhado com parágrafo(s) separado(s); a menos que o título seja auto-explicativo (como "Erro corrigido no main.cpp") então uma única linha de título é suficiente. As mensagens commit devem ser úteis para as pessoas que leem seu código no futuro, então explique o raciocínio das suas decisões. Maiores explicações [aqui](http://chris.beams.io/posts/git-commit/).
 
 Se uma commit específica faz referência a outro problema, por favor adicione a referência, por exemplo, "refs #1234", ou "correções #4321". Usar palavras-chave "corrigir ou fechar" fará com que o problema correspondente seja fechado quando a pull request for mesclada.
 
@@ -47,7 +47,7 @@ Nesta fase, deve-se esperar comentários e reviews de outros contribuidores. Voc
 Filosofia Pull Request
 -----------------------
 
-Os patches devem sempre ser focados. Por exemplo, uma pull request pode adicionar um recurso, corrigir um bug, ou um código de refator; mas não uma mistura. Por favor, evite também pull requests que tenham que fazer muita coisa, são excessivamente grandes, ou execessivamente complexas pois isso dificulta a revisão.
+Os patches devem sempre ser focados. Por exemplo, uma pull request pode adicionar um recurso, corrigir um bug, ou um código de refator; mas não uma mistura. Por favor, evite também pull requests que tenham que fazer muita coisa, são excessivamente grandes ou execessivamente complexas pois isso dificulta a revisão.
 
 
 ### Recursos
@@ -87,7 +87,7 @@ Patches que mudam as regras de consenso do Criptoreal são consideravelmente mai
 
 ### Revisão de pares
 
-Qualquer pessoa pode participar da revisão de pares, que é expresa pelos comentários na pull request. Normalmente, os revisores irão rever o código para erros óbvios, além de testar o conjunto de correções e opinar sobre os méritos sobre os méritos técnicos do patch. Os mantenedores do projeto levam em consideração a avaliação dos pares ao determinar se há consenso para realizar a fusão de um pull request (lembre-se de que as discussões podem ser feitas no github, lista de email e IRC). A seguinte linguagem deve ser usada nos comentários da  pull request:
+Qualquer pessoa pode participar da revisão de pares, que é expresa pelos comentários na pull request. Normalmente, os revisores irão rever o código para erros óbvios, além de testar o conjunto de correções e opinar sobre os méritos técnicos do patch. Os mantenedores do projeto levam em consideração a avaliação dos pares ao determinar se há consenso para realizar a fusão de um pull request (lembre-se de que as discussões podem ser feitas no github, lista de email e IRC). A seguinte linguagem deve ser usada nos comentários da  pull request:
 
   - ACK significa "Eu testei o código e concordo que deva ser mesclado";
   - NACK significa "Eu não concordo que isso deve sofrer fusão", e deve estar acompanhado de uma justificativa técnica sólida. NACKs sem o acompanhamento de algum motivo podem ser desconsiderados;
@@ -97,9 +97,9 @@ Qualquer pessoa pode participar da revisão de pares, que é expresa pelos comen
 
 Os revisores devem incluir o hash que eles revisaram em seus comentários.
 
-Os mantenedores do projeot se resevam o direito de pesar as opiniões dos revisores de pares usando o julgamento do senso comum e também podem ter peso com base na meritocracia: Aqueles que demonstraram um compromisso e uma compreensão mais profundos em relação ao projeto (ao longo do tempo) ou tem conhecimentos claros de domínio, podem, naturalmente ter mais peso, como seria de se esperar em todos os setores da vida.
+Os mantenedores do projeto se resevam o direito de pesar as opiniões dos revisores de pares usando o julgamento do senso comum e também podem ter peso com base na meritocracia: Aqueles que demonstraram um compromisso e uma compreensão mais profundos em relação ao projeto (ao longo do tempo) ou tem conhecimentos claros de domínio, podem, naturalmente ter mais peso, como seria de se esperar em todos os setores da vida.
 
-Onde um conjunto de patches afeta o código crítico de consenso, a dificuldade será muito maior em termos de discussão e requisitos de revisão por pares, tendo em mente que os erros podem ser muito onerosos para a comunidade em geral. Isto inclui refatoração de código crítico de consenso.
+Onde um conjunto de patches afetar o código crítico de consenso, a dificuldade será muito maior em termos de discussão e requisitos de revisão por pares, tendo em mente que os erros podem ser muito onerosos para a comunidade em geral. Isto inclui refatoração de código crítico de consenso.
 
 Quando um conjunto de patches propõe mudar o consenso Criptoreal, isto deve ser discutido extensivamente na lista de emails e IRC, ser acompanhado por um BIP amplamente discutido e ter um consenso técnico amplamente percebido de ser uma mudança que vale a pena, com base no julgamento dos mantenedores.
 
