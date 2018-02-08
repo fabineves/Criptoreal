@@ -8,7 +8,7 @@
 2. Clique na aba Receber (Receive).
 3. Preencha o formulário para requerer um pagamento.
     * Etiqueta: mn01
-    * Valor: 1000 (optional)
+    * Valor: 1000 (opcional)
     * Clique no botão  *Requerer Pagamento* 
 5. Clique no botão *Copiar endereço* 
 
@@ -40,7 +40,7 @@ Crie o arquivo `masternode.conf` no mesmo diretório da sua `wallet.dat`.
 
 Copie a chave privada masternode private key e corresponda uma transação de saída colateral que contenha 1000 CRS.
 
-*Nota: A chave privada masternode **não** igual a chave privada da carteira. **Nunca** coloque a chave privada da sua carteira no arquivo masternode.conf. Isto é quase equivalente a colocar seus 1000 CRS no servidor remoto e derrota o propósito de uma configuração quente/fria.*
+*Nota: A chave privada masternode **não** é igual a chave privada da carteira. **Nunca** coloque a chave privada da sua carteira no arquivo masternode.conf. Isto é quase equivalente a colocar seus 1000 CRS no servidor remoto e derrota o propósito de uma configuração quente/fria.*
 
 ### Obter a saída colateral
 
