@@ -1,18 +1,14 @@
-Compiling/running unit tests
+Compilando/executando testes de unidade
 ------------------------------------
 
-Unit tests will be automatically compiled if dependencies were met in `./configure`
-and tests weren't explicitly disabled.
+Testes de unidade serão compilados automaticamente se as dependências forem atendidas em `./configure` e se os testes não foram explicitamente desabilitados.
 
-After configuring, they can be run with `make check`.
+Após a configuração, eles podem ser executados com `make check`.
 
-To run the criptoreald tests manually, launch `src/test/test_criptoreal`.
+Para executar os testes do criptoreald tests manualmente, carregue `src/test/test_criptoreal`.
 
-To add more criptoreald tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
-.cpp files in the `test/` directory or add new .cpp files that
-implement new BOOST_AUTO_TEST_SUITE sections.
+Para adicionar mais testes criptoreald, adicione as funções`BOOST_AUTO_TEST_CASE` para os arquivos .cpp existentes no diretório `test/` directory ou adicione novos arquivos .cpp que implementam novas seções BOOST_AUTO_TEST_SUITE.
 
-To run the criptoreal-qt tests manually, launch `src/qt/test/test_criptoreal-qt`
+Para executar os testes criptoreal-qt manualmente, carregue `src/qt/test/test_criptoreal-qt`
 
-To add more criptoreal-qt tests, add them to the `src/qt/test/` directory and
-the `src/qt/test/test_main.cpp` file.
+Para adicionar mais testes criptoreal-qt, adicione-os ao diretório `src/qt/test/` e ao arquivo `src/qt/test/test_main.cpp`.
