@@ -39,7 +39,7 @@ Este valor pode ser substituído passando o seguinte argumento para o daemon Cri
 -instantsenddepth=<n>
 ```
 
-A chave é entender que este valor indica o número de "confirmações" que um sincronismo de transação bem sucedido representa. Quando os comandos RPC da carteira que suportam os parâmetros`minconf` e `addlockconf` (assim como `listreceivedbyaddress`) são executados e  `addlockconf` és `true`, então o atributo `instantsenddepth` é levado em consideração ao retornar as informações sobre a transação. Neste caso, o valor no campo `confirmations` que você vê através do RPC é o número de `"Blockchain Confirmations" + "InstantSend Depth"` (assumindo que os fundos foram enviados via InstantSend).
+A chave é entender que este valor indica o número de "confirmações" que um sincronismo de transação bem sucedido representa. Quando os comandos RPC da carteira que suportam os parâmetros`minconf` e `addlockconf` (assim como `listreceivedbyaddress`) são executados e  `addlockconf` é `true`, então o atributo `instantsenddepth` é levado em consideração ao retornar as informações sobre a transação. Neste caso, o valor no campo `confirmations` que você vê através do RPC é o número de `"Blockchain Confirmations" + "InstantSend Depth"` (assumindo que os fundos foram enviados via InstantSend).
 
 Também existe um campo de nome `instantlock` (que está presente em comandos como o `listsinceblock`). O valor neste campo indica se uma determinada transação está bloqueada via InstantSend.
 
