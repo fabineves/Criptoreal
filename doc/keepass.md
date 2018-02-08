@@ -22,7 +22,7 @@ As seguintes novidades estão disponíveis para criptoreald e criptoreal-qt:
 Os seguintes comandos rpc estão disponíveis:
 
  - _keepass genkey_: gera uma chave AES de 256 bits codificada em base64 que pode ser usada para a comunicação com o KeePassHttp. Somente necessário para a configuração manual. Use init para configuração automática.
- - _keepass init_: configura a associação entre o criptoreald e o keepass, gerando uma chave AES e enviando uma mensagem de associação para KeePassHttp. Isto irá desencadear o KeePass para pediur um ID para a associação. Retorna a associação e a string codificada base64 para a chave AES.
+ - _keepass init_: configura a associação entre o criptoreald e o keepass, gerando uma chave AES e enviando uma mensagem de associação para KeePassHttp. Isto irá desencadear o KeePass para pedir um ID para a associação. Retorna a associação e a string codificada base64 para a chave AES.
  - _keepass setpassphrase_: atualiza a senha no KeePassHttp para um novo valor. Isto deve corresponder a senha que você deve pretende usar para a carteira. Observe que os comandos RPC padrão _walletpassphrasechange_ e a criptografia da carteira do QT GUI já envia as atualizações para KeePassHttp, então isto só é necessário para manipulação manual da senha.
 
 ### Como configurar
