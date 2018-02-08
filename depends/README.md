@@ -12,7 +12,7 @@ Por exemplo:
 
     make HOST=x86_64-w64-mingw32 -j4
 
-Será gerado um prefiox apropriado para se conectar a configuração do Criptoreal. No exemplo acima, um diretório chamado x86_64-w64-mingw32 será criado. Para usá-lo para Criptoreal:
+Será gerado um prefixo apropriado para se conectar a configuração do Criptoreal. No exemplo acima, um diretório chamado x86_64-w64-mingw32 será criado. Para usá-lo para Criptoreal:
 
     ./configure --prefix=`pwd`/depends/x86_64-w64-mingw32
 
