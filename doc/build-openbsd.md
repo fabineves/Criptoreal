@@ -43,7 +43,7 @@ Isto torna necessária a criação de um boost, ou pelo menos as partes usadas p
 
 
 ```
-# Pick some path to install boost to, here we create a directory within the criptoreal directory
+# Escolha um caminho para instalar o boost, aqui criamos um diretório dentro do diretório criptoreal
 BITCOIN_ROOT=$(pwd)
 BOOST_PREFIX="${BITCOIN_ROOT}/boost"
 mkdir -p $BOOST_PREFIX
@@ -149,9 +149,9 @@ gmake
 
 Entretanto, isto parece não funcionar. A compilação é bem sucedida, mas o link falha com muitos erros de 'símbolos de locais descartados':
 
-local symbol 150: discarded in section `.text._ZN10tinyformat6detail14FormatIterator6finishEv' from libbitcoin_util.a(libbitcoin_util_a-random.o)
-    local symbol 151: discarded in section `.text._ZN10tinyformat6detail14FormatIterator21streamStateFromFormatERSoRjPKcii' from libbitcoin_util.a(libbitcoin_util_a-random.o)
-    local symbol 152: discarded in section `.text._ZN10tinyformat6detail12convertToIntIA13_cLb0EE6invokeERA13_Kc' from libbitcoin_util.a(libbitcoin_util_a-random.o)
+local symbol 150: descartado na seção `.text._ZN10tinyformat6detail14FormatIterator6finishEv' from libbitcoin_util.a(libbitcoin_util_a-random.o)
+    local symbol 151: descartado na seção `.text._ZN10tinyformat6detail14FormatIterator21streamStateFromFormatERSoRjPKcii' from libbitcoin_util.a(libbitcoin_util_a-random.o)
+    local symbol 152: descartado na seção `.text._ZN10tinyformat6detail12convertToIntIA13_cLb0EE6invokeERA13_Kc' from libbitcoin_util.a(libbitcoin_util_a-random.o)
 
 De acordo com outros erros semelhantes que foram relatados, este é um problema de binutils (ld) na 2.15, a versão instalada pelo OpenBSD 5.7:
 
