@@ -7,7 +7,7 @@ A maioria dos desenvolvedores usa a compilação cruzada do Ubuntu para criar ex
 
 Compilar no Windows é possível (por exemplo usando msys / mingw-w64), mas ninguém documentou as etapas para fazer este processo. Se você está fazendo isto, contribua com a comunidade.
 
-Cross-compilation
+Compilação Cruzada
 -------------------
 
 Estas etapas podem ser realizadas em, por exemplo, uma VM do Ubuntu. O sistema dependente também funcionará em outras distribuições Linux, entretanto, os comandos para instalar a cadeia de ferramentas serão diferentes.
