@@ -25,7 +25,7 @@ Instruções: Homebrew
 
     brew install autoconf automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf libevent qt
 
-NOTA:Compilar com Qt4 ainda é suportado, entretanto, pode resultar em UI quebrada. Portanto, compilar com Qt5 é recomendado. Esteja atento que Qt5 5.7+ requer suporte ao compilador C++11.
+NOTA: Compilar com Qt4 ainda é suportado, entretanto, pode resultar em UI quebrada. Portanto, compilar com Qt5 é recomendado. Esteja atento que Qt5 5.7+ requer suporte ao compilador C++11.
 
 ### Compilando Criptoreal Core
 
