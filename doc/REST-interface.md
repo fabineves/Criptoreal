@@ -12,7 +12,7 @@ API Suportada
 ####Transações
 `GET /rest/tx/<TX-HASH>.<bin|hex|json>`
 
-Dada uma transação hash: retorna uma transação binária, binária codificada como hexadecimal ou em JSON.
+Dada uma transação hash: retorna uma transação binária, codificada como hexadecimal ou em JSON.
 
 Para uma consulta TX, deve habilitar o índice da transação via "txindex=1" linha de comando / opções de configuração.
 
@@ -20,11 +20,11 @@ Para uma consulta TX, deve habilitar o índice da transação via "txindex=1" li
 `GET /rest/block/<BLOCK-HASH>.<bin|hex|json>`
 `GET /rest/block/notxdetails/<BLOCK-HASH>.<bin|hex|json>`
 
-Given a block hash: returns a block, in binary, hex-encoded binary or JSON formats.
+Dado um bloco hash: retorna um bloco, em binário, binário hexadecimal ou formato JSON.
 
-The HTTP request and response are both handled entirely in-memory, thus making maximum memory usage at least 2.66MB (1 MB max block, plus hex encoding) per request.
+A solicitação e a resposta HTTP são ambas tratadas inteiramente na memória, fazendo com que o uso máximo de memória seja de pelo menos 2.66MB (bloqueio máximo de1 MB, além da codificação hexadecimal) por solicitação.
 
-With the /notxdetails/ option JSON response will only contain the transaction hash instead of the complete transaction details. The option only affects the JSON response.
+Com a opção /notxdetails/ a resposta JSON irá conter apenas o hash da transação ao invés dos detalhes completos da transação. Esta opção afetas apenas a resposta JSON.
 
 #### Blockheaders
 `GET /rest/headers/<COUNT>/<BLOCK-HASH>.<bin|hex|json>`
