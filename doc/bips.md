@@ -1,4 +1,4 @@
-BIPs that are implemented by Bitcoin Core (up-to-date up to **v0.12.0**):
+BIPs implementados pelo Bitcoin Core (atualizado até a versão **v0.12.0**):
 
 * [`BIP 11`](https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki): Saídas Multisig são padrão desde **v0.6.0** ([PR #669](https://github.com/bitcoin/bitcoin/pull/669)).
 * [`BIP 13`](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki): O formato de endereço para os endereços P2SH foram implementados desde **v0.6.0** ([PR #669](https://github.com/bitcoin/bitcoin/pull/669)).
